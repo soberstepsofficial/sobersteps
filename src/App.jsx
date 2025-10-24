@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
 import { Smile, CheckCircle, Users, Home, Gamepad2, BookOpen, Info, HelpCircle, Menu, X, Play, Award, Target, Heart, ArrowRight, RotateCcw, Star, TrendingUp } from 'lucide-react'
 
-// Custom Hook for Navigation
-function useNavigation() {
-  const [currentPage, setCurrentPage] = useState('home')
-  return { currentPage, setCurrentPage }
-}
 
 // Game State Management Hook
 function useGameState() {
@@ -451,52 +447,41 @@ function ProgressDashboard({ userProgress }) {
   )
 }
 
-// Header Component (unchanged)
-function Header({ currentPage, setCurrentPage }) {
+function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   
   const navItems = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'games', label: 'Play Games', icon: Gamepad2 },
-    { id: 'learn', label: 'Learn', icon: BookOpen },
-    { id: 'about', label: 'About', icon: Info },
-    { id: 'help', label: 'Get Help', icon: HelpCircle }
+    { id: 'home', label: 'Home', icon: Home, path: '/' },
+    { id: 'games', label: 'Play Games', icon: Gamepad2, path: '/games' },
+    { id: 'learn', label: 'Learn', icon: BookOpen, path: '/learn' },
+    { id: 'about', label: 'About', icon: Info, path: '/about' },
+    { id: 'help', label: 'Get Help', icon: HelpCircle, path: '/help' }
   ]
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0 cursor-pointer" onClick={() => setCurrentPage('home')}>
+        <div className="flex justify-center items-center h-16">
+          <Link to="/" className="flex-shrink-0">
             <span className="text-2xl font-bold text-gray-900">
               SoberSteps
             </span>
-          </div>
+          </Link>
 
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map(({ id, label, icon: Icon }) => (
-              <button
+          <div className="hidden md:flex items-center space-x-8 ml-8">
+            {navItems.map(({ id, label, icon: Icon, path }) => (
+              <Link
                 key={id}
-                onClick={() => setCurrentPage(id)}
-                className={`flex items-center space-x-1 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                  currentPage === id
-                    ? 'text-blue-600 bg-blue-50'
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                }`}
+                to={path}
+                className="flex items-center space-x-1 px-3 py-2 text-sm font-medium rounded-md transition-colors text-gray-700 hover:text-blue-600 hover:bg-gray-50"
               >
                 <Icon className="w-4 h-4" />
                 <span>{label}</span>
-              </button>
+              </Link>
             ))}
           </div>
 
-          <div className="hidden md:block">
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
-              Sign In
-            </button>
-          </div>
-
-          <div className="md:hidden">
+          <div className="md:hidden absolute right-4">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-gray-700 hover:text-blue-600 p-2"
@@ -508,24 +493,17 @@ function Header({ currentPage, setCurrentPage }) {
 
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4">
-            {navItems.map(({ id, label, icon: Icon }) => (
-              <button
+            {navItems.map(({ id, label, icon: Icon, path }) => (
+              <Link
                 key={id}
-                onClick={() => {
-                  setCurrentPage(id)
-                  setMobileMenuOpen(false)
-                }}
-                className={`flex items-center space-x-2 w-full px-4 py-2 text-sm font-medium ${
-                  currentPage === id ? 'text-blue-600 bg-blue-50' : 'text-gray-700'
-                }`}
+                to={path}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center space-x-2 w-full px-4 py-2 text-sm font-medium text-gray-700"
               >
                 <Icon className="w-4 h-4" />
                 <span>{label}</span>
-              </button>
+              </Link>
             ))}
-            <button className="w-full mt-4 bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
-              Sign In
-            </button>
           </div>
         )}
       </nav>
@@ -653,7 +631,8 @@ function GamesPage({ userProgress, updateProgress }) {
 }
 
 // Enhanced Home Page (simplified version)
-function HomePage({ setCurrentPage }) {
+function HomePage() {
+  const navigate = useNavigate()
   return (
     <div>
       <div className="bg-gradient-to-br from-blue-50 to-purple-50 py-20">
@@ -672,14 +651,14 @@ function HomePage({ setCurrentPage }) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
-                onClick={() => setCurrentPage('games')}
+                onClick={() => navigate('/games')}
                 className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
               >
                 <Play className="w-5 h-5" />
                 <span>Start Playing</span>
               </button>
               <button 
-                onClick={() => setCurrentPage('learn')}
+                onClick={() => navigate('/learn')}
                 className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-medium hover:bg-blue-50 transition-colors"
               >
                 Learn More
@@ -710,7 +689,7 @@ function HomePage({ setCurrentPage }) {
                 <li>• Skills transfer to real-world situations</li>
               </ul>
               <button 
-                onClick={() => setCurrentPage('games')}
+                onClick={() => navigate('/games')}
                 className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Try It Now
@@ -1121,27 +1100,27 @@ function Footer() {
           <div>
             <h4 className="font-semibold mb-3">Resources</h4>
             <div className="space-y-2 text-sm">
-              <p className="text-gray-400">Interactive Games</p>
-              <p className="text-gray-400">Learning Articles</p>
-              <p className="text-gray-400">Research Citations</p>
+              <Link to="/games" className="block text-gray-400 hover:text-white transition-colors">Interactive Games</Link>
+              <Link to="/learn" className="block text-gray-400 hover:text-white transition-colors">Learning Articles</Link>
+              <Link to="/about" className="block text-gray-400 hover:text-white transition-colors">Research Citations</Link>
             </div>
           </div>
           
           <div>
             <h4 className="font-semibold mb-3">Support</h4>
             <div className="space-y-2 text-sm">
-              <p className="text-gray-400">Crisis Resources</p>
-              <p className="text-gray-400">Professional Help</p>
-              <p className="text-gray-400">Contact Us</p>
+              <Link to="/help" className="block text-gray-400 hover:text-white transition-colors">Crisis Resources</Link>
+              <Link to="/help" className="block text-gray-400 hover:text-white transition-colors">Professional Help</Link>
+              <Link to="/about" className="block text-gray-400 hover:text-white transition-colors">Contact Us</Link>
             </div>
           </div>
           
           <div>
             <h4 className="font-semibold mb-3">Legal</h4>
             <div className="space-y-2 text-sm">
-              <p className="text-gray-400">Privacy Policy</p>
-              <p className="text-gray-400">Terms of Service</p>
-              <p className="text-gray-400">Accessibility</p>
+              <a href="#" className="block text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" className="block text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+              <a href="#" className="block text-gray-400 hover:text-white transition-colors">Accessibility</a>
             </div>
           </div>
         </div>
@@ -1156,26 +1135,22 @@ function Footer() {
 
 // Main App Component
 function App() {
-  const { currentPage, setCurrentPage } = useNavigation()
   const { userProgress, updateProgress } = useGameState()
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home': return <HomePage setCurrentPage={setCurrentPage} />
-      case 'games': return <GamesPage userProgress={userProgress} updateProgress={updateProgress} />
-      case 'learn': return <LearnPage />
-      case 'about': return <AboutPage />
-      case 'help': return <HelpPage />
-      default: return <HomePage setCurrentPage={setCurrentPage} />
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-white">
-      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      {renderPage()}
-      <Footer />
-    </div>
+    <Router>
+      <div className="min-h-screen bg-white">
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/games" element={<GamesPage userProgress={userProgress} updateProgress={updateProgress} />} />
+          <Route path="/learn" element={<LearnPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/help" element={<HelpPage />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   )
 }
 
