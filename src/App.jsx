@@ -1126,7 +1126,7 @@ function Footer() {
         </div>
         
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-          <p>&copy; 2024 SoberSteps. All rights reserved. This platform provides educational content only and is not a substitute for professional medical or psychological advice.</p>
+          <p>&copy; 2025 SoberSteps. All rights reserved. This platform provides educational content only and is not a substitute for professional medical or psychological advice.</p>
         </div>
       </div>
     </footer>
