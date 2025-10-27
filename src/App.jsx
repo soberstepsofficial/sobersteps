@@ -755,7 +755,7 @@ function HomePage() {
 
 // Enhanced Learn Page with Research Citations
 function LearnPage() {
-  const [selectedTopic, setSelectedTopic] = useState(null)
+  const [selectedTopic, setSelectedTopic] = useState(null);
 
   const topics = [
     {
@@ -764,20 +764,38 @@ function LearnPage() {
       summary: 'Learn about different types of peer pressure and evidence-based resistance strategies.',
       readTime: '8 min read',
       content: {
-        overview: 'Peer pressure is the influence exerted by peers to encourage someone to change their attitudes, values, or behaviors to conform to group norms.',
+        overview:
+          'Peer pressure is the influence exerted by peers to encourage someone to change their attitudes, values, or behaviors to conform to group norms. While peer influence can be positive, such as encouraging healthy behaviors, it often presents challenges during adolescence, a critical period for identity development.',
         types: [
           'Direct pressure: Explicit requests or demands to engage in specific behaviors',
           'Indirect pressure: Subtle social cues and expectations within peer groups',
-          'Individual pressure: Internal desire to fit in or be accepted'
+          'Individual pressure: Internal desire to fit in or be accepted',
         ],
         strategies: [
           'The "Broken Record" technique: Calmly repeat your position without elaboration',
           'Suggest alternatives: Redirect the group toward different activities',
           'Use confident body language: Stand tall, make eye contact, speak clearly',
-          'Find allies: Identify others who share your values'
+          'Find allies: Identify others who share your values',
         ],
-        research: 'Studies show that resistance skills training can reduce substance use initiation by up to 40% (Botvin & Griffin, 2004).'
-      }
+        research:
+          'Studies show that resistance skills training can reduce substance use initiation by up to 40% (Botvin & Griffin, 2004).',
+        fullText: `
+### What Peer Pressure Looks Like
+Adolescents experience peer pressure in multiple forms. Direct pressure may include friends asking you to try alcohol or skip homework. Indirect pressure comes from observing behaviors, such as noticing everyone at school is vaping or dressing a certain way. Individual pressure arises internally; teens often feel they must conform to belong.
+
+### Psychological Mechanisms
+Peer pressure works because of social reward systems. Adolescents are more sensitive to peer evaluation due to developmental changes in the brain, particularly in the prefrontal cortex and limbic system (Steinberg, 2014). Social acceptance activates reward pathways, making it motivating to comply with group norms.
+
+### Practical Strategies
+1. **The Broken Record**: Calm repetition can defuse repeated requests.
+2. **Suggesting Alternatives**: Offer different activities that align with your values.
+3. **Confident Body Language**: Nonverbal cues reinforce verbal refusal.
+4. **Finding Allies**: Support from peers with shared values strengthens resistance.
+
+### Applying Skills in Real Life
+Interactive simulations help practice these skills safely. Studies show adolescents who practice refusal skills in role-play scenarios report higher confidence and reduced likelihood of risky behaviors (Botvin et al., 2001).
+`
+      },
     },
     {
       id: 'decision-making',
@@ -785,22 +803,41 @@ function LearnPage() {
       summary: 'A step-by-step approach to making decisions that align with your values and goals.',
       readTime: '10 min read',
       content: {
-        overview: 'Effective decision-making involves systematic evaluation of options, consequences, and personal values.',
+        overview:
+          'Effective decision-making requires structured evaluation of options, potential consequences, and alignment with personal values. Adolescents benefit from step-by-step frameworks that reduce impulsive choices and improve long-term outcomes.',
         framework: [
           'STOP: Pause and recognize you have a choice to make',
           'THINK: Consider your options and their potential consequences',
           'EVALUATE: Weigh options against your personal values and goals',
           'DECIDE: Make a choice and commit to following through',
-          'REFLECT: Learn from the outcomes of your decision'
+          'REFLECT: Learn from the outcomes of your decision',
         ],
         factors: [
           'Short-term vs. long-term consequences',
           'Impact on personal goals and relationships',
           'Alignment with personal values and beliefs',
-          'Availability of support and resources'
+          'Availability of support and resources',
         ],
-        research: 'Research in developmental psychology shows that structured decision-making frameworks improve adolescent choice quality (Steinberg, 2013).'
-      }
+        research:
+          'Research in developmental psychology shows that structured decision-making frameworks improve adolescent choice quality (Steinberg, 2013).',
+        fullText: `
+### Introduction to Decision-Making
+Adolescents face numerous choices daily, from academic priorities to social situations. Without guidance, they may rely on impulsive responses. Structured frameworks empower teens to analyze decisions critically, anticipate outcomes, and make choices consistent with long-term goals.
+
+### The STOP-THINK-EVALUATE-DECIDE-REFLECT Framework
+1. **STOP**: Pause before acting to prevent impulsive decisions.
+2. **THINK**: Identify all options and consider potential consequences.
+3. **EVALUATE**: Assess options against personal values and relationships.
+4. **DECIDE**: Commit to a choice with confidence.
+5. **REFLECT**: Review outcomes to improve future decisions.
+
+### Real-Life Applications
+For example, when deciding whether to attend a party where substances will be present, this framework encourages weighing social pressures against personal values, safety, and goals. Adolescents practicing these steps show improved decision outcomes and reduced engagement in risky behaviors (Steinberg, 2013).
+
+### Developing Decision-Making Skills
+Exercises like interactive scenario-based games allow teens to practice decision-making without real-world consequences. Repetition builds cognitive skills, problem-solving, and self-efficacy.
+`
+      },
     },
     {
       id: 'stress-coping',
@@ -808,27 +845,46 @@ function LearnPage() {
       summary: 'Evidence-based techniques for managing stress and difficult emotions without harmful substances.',
       readTime: '12 min read',
       content: {
-        overview: 'Stress is a normal part of life, but how we cope with it significantly impacts our wellbeing and decision-making.',
+        overview:
+          'Stress is a normal life experience, but how adolescents cope influences mental health, decision-making, and overall wellbeing. Evidence-based stress management strategies enhance coping skills and resilience.',
         techniques: [
           'Deep breathing exercises: Activate the parasympathetic nervous system',
           'Progressive muscle relaxation: Systematically tension and release muscle groups',
           'Mindfulness meditation: Focus attention on present moment experiences',
           'Physical exercise: Release endorphins and reduce stress hormones',
-          'Social support: Connect with trusted friends, family, or counselors'
+          'Social support: Connect with trusted friends, family, or counselors',
         ],
         warning_signs: [
           'Persistent feelings of overwhelm or helplessness',
           'Changes in sleep patterns or appetite',
           'Withdrawal from activities or relationships',
-          'Increased irritability or mood swings'
+          'Increased irritability or mood swings',
         ],
-        research: 'Meta-analyses demonstrate that cognitive-behavioral stress management techniques reduce anxiety and improve coping skills in adolescents (Ames et al., 2011).'
-      }
-    }
-  ]
+        research:
+          'Meta-analyses demonstrate that cognitive-behavioral stress management techniques reduce anxiety and improve coping skills in adolescents (Ames et al., 2011).',
+        fullText: `
+### Understanding Stress
+Adolescence is marked by rapid cognitive, social, and emotional changes. Stressors may include academic pressure, peer relationships, or family conflict. Chronic stress negatively impacts brain development and decision-making.
+
+### Evidence-Based Techniques
+1. **Deep Breathing**: Controlled breathing lowers heart rate and reduces anxiety.
+2. **Progressive Muscle Relaxation**: Alternating tension and release helps recognize physical stress.
+3. **Mindfulness Meditation**: Awareness exercises reduce rumination and improve focus.
+4. **Physical Exercise**: Aerobic activity releases endorphins, improving mood.
+5. **Social Support**: Talking with trusted adults or peers buffers stress effects.
+
+### Recognizing Warning Signs
+Teens should monitor for persistent feelings of hopelessness, social withdrawal, or significant changes in sleep and appetite. Early recognition leads to timely interventions.
+
+### Integrating Stress Management Into Daily Life
+Structured practice using interactive scenarios or guided exercises enhances skills transfer. Adolescents trained in stress management report lower anxiety, better coping strategies, and higher self-efficacy (Ames et al., 2011). Regular practice ensures resilience against future challenges.
+`
+      },
+    },
+  ];
 
   if (selectedTopic) {
-    const topic = topics.find(t => t.id === selectedTopic)
+    const topic = topics.find((t) => t.id === selectedTopic);
     return (
       <div className="min-h-screen bg-white py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -839,13 +895,13 @@ function LearnPage() {
             <ArrowRight className="w-4 h-4 transform rotate-180" />
             <span>Back to Topics</span>
           </button>
-          
+
           <article className="prose prose-lg max-w-none">
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-gray-900 mb-2">{topic.title}</h1>
               <p className="text-gray-600">{topic.readTime}</p>
             </div>
-            
+
             <div className="bg-blue-50 p-6 rounded-lg mb-8">
               <h2 className="text-xl font-semibold text-blue-900 mb-3">Overview</h2>
               <p className="text-blue-800">{topic.content.overview}</p>
@@ -856,7 +912,9 @@ function LearnPage() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Types of {topic.title.split(' ')[1]}</h2>
                 <ul className="space-y-2">
                   {topic.content.types.map((type, index) => (
-                    <li key={index} className="text-gray-700">• {type}</li>
+                    <li key={index} className="text-gray-700">
+                      • {type}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -867,7 +925,9 @@ function LearnPage() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Effective Strategies</h2>
                 <ul className="space-y-3">
                   {topic.content.strategies.map((strategy, index) => (
-                    <li key={index} className="text-gray-700">• {strategy}</li>
+                    <li key={index} className="text-gray-700">
+                      • {strategy}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -878,7 +938,9 @@ function LearnPage() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Decision-Making Framework</h2>
                 <ol className="space-y-3">
                   {topic.content.framework.map((step, index) => (
-                    <li key={index} className="text-gray-700">{index + 1}. {step}</li>
+                    <li key={index} className="text-gray-700">
+                      {index + 1}. {step}
+                    </li>
                   ))}
                 </ol>
               </div>
@@ -889,7 +951,9 @@ function LearnPage() {
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">Healthy Coping Techniques</h2>
                 <ul className="space-y-3">
                   {topic.content.techniques.map((technique, index) => (
-                    <li key={index} className="text-gray-700">• {technique}</li>
+                    <li key={index} className="text-gray-700">
+                      • {technique}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -900,11 +964,16 @@ function LearnPage() {
                 <h2 className="text-xl font-semibold text-yellow-900 mb-4">When to Seek Additional Support</h2>
                 <ul className="space-y-2">
                   {topic.content.warning_signs.map((sign, index) => (
-                    <li key={index} className="text-yellow-800">• {sign}</li>
+                    <li key={index} className="text-yellow-800">
+                      • {sign}
+                    </li>
                   ))}
                 </ul>
               </div>
             )}
+
+            {/* Full expanded text */}
+            <div className="mb-8 prose prose-lg max-w-none">{topic.content.fullText}</div>
 
             <div className="bg-gray-50 p-6 rounded-lg">
               <h2 className="text-lg font-semibold text-gray-900 mb-3">Research Foundation</h2>
@@ -913,7 +982,7 @@ function LearnPage() {
           </article>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -923,10 +992,10 @@ function LearnPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Evidence-Based Learning Resources</h1>
           <p className="text-xl text-gray-600">Research-backed information to support healthy decision-making</p>
         </div>
-        
+
         <div className="space-y-6">
           {topics.map((topic) => (
-            <div 
+            <div
               key={topic.id}
               onClick={() => setSelectedTopic(topic.id)}
               className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-200 hover:border-blue-300"
@@ -949,14 +1018,18 @@ function LearnPage() {
           <p className="text-blue-800 mb-4">
             If you're struggling with these topics or need someone to talk to, remember that seeking help is a sign of strength.
           </p>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          <button
+            onClick={() => window.location.href = '/help'}
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          >
             Find Support Resources
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
+
 
 // Other components remain the same (AboutPage, HelpPage, Footer)
 function AboutPage() {
