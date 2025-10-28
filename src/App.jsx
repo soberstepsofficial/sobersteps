@@ -410,6 +410,305 @@ function PeerPressureGame({ onComplete }) {
   )
 }
 
+// Wellness Tracker Game Component
+function WellnessTracker({ onComplete }) {
+  const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
+  const [wellnessData, setWellnessData] = useState({
+    mood: 5,
+    sleep: 7,
+    stress: 5,
+    physical: 5,
+    social: 5,
+    notes: ''
+  })
+  const [weekData, setWeekData] = useState([])
+  const [showStats, setShowStats] = useState(false)
+  const [achievements, setAchievements] = useState([])
+  const [streak, setStreak] = useState(0)
+
+  // Initialize week data
+  useState(() => {
+    const week = []
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date()
+      date.setDate(date.getDate() - i)
+      week.push({
+        date: date.toISOString().split('T')[0],
+        mood: Math.floor(Math.random() * 3) + 5,
+        sleep: Math.floor(Math.random() * 2) + 6,
+        stress: Math.floor(Math.random() * 3) + 4,
+        physical: Math.floor(Math.random() * 3) + 4,
+        social: Math.floor(Math.random() * 3) + 4
+      })
+    }
+    setWeekData(week)
+  }, [])
+
+  const moodEmojis = ['😢', '😟', '😕', '😐', '🙂', '😊', '😄', '😁', '🤩', '🥳']
+  const categories = [
+    { key: 'mood', label: 'Mood', icon: '😊', color: 'yellow', max: 10 },
+    { key: 'sleep', label: 'Sleep Hours', icon: '😴', color: 'blue', max: 12 },
+    { key: 'stress', label: 'Stress Level', icon: '😰', color: 'red', max: 10, inverse: true },
+    { key: 'physical', label: 'Physical Activity', icon: '🏃', color: 'green', max: 10 },
+    { key: 'social', label: 'Social Connection', icon: '👥', color: 'purple', max: 10 }
+  ]
+
+  const handleSliderChange = (key, value) => {
+    setWellnessData(prev => ({ ...prev, [key]: value }))
+  }
+
+  const handleSubmit = () => {
+    // Add to week data
+    const newEntry = {
+      date: currentDate,
+      ...wellnessData
+    }
+    
+    const updatedWeek = [...weekData.filter(d => d.date !== currentDate), newEntry]
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+      .slice(-7)
+    
+    setWeekData(updatedWeek)
+    
+    // Calculate streak
+    const newStreak = streak + 1
+    setStreak(newStreak)
+    
+    // Check achievements
+    const newAchievements = []
+    if (newStreak === 3) newAchievements.push('3-Day Streak! 🔥')
+    if (newStreak === 7) newAchievements.push('Week Warrior! 🏆')
+    if (wellnessData.mood >= 8) newAchievements.push('Positive Vibes! ✨')
+    if (wellnessData.sleep >= 8) newAchievements.push('Well Rested! 💤')
+    if (wellnessData.physical >= 7) newAchievements.push('Active Lifestyle! 💪')
+    
+    if (newAchievements.length > 0) {
+      setAchievements(prev => [...prev, ...newAchievements])
+    }
+    
+    // Calculate score
+    const totalScore = Object.values(wellnessData)
+      .filter(v => typeof v === 'number')
+      .reduce((sum, val) => sum + val, 0)
+    
+    onComplete('wellness-tracker', totalScore)
+    
+    // Show stats
+    setShowStats(true)
+    
+    // Reset for next day
+    setTimeout(() => {
+      setShowStats(false)
+      setWellnessData({
+        mood: 5,
+        sleep: 7,
+        stress: 5,
+        physical: 5,
+        social: 5,
+        notes: ''
+      })
+    }, 5000)
+  }
+
+  const getAverage = (key) => {
+    if (weekData.length === 0) return 0
+    const sum = weekData.reduce((acc, day) => acc + (day[key] || 0), 0)
+    return (sum / weekData.length).toFixed(1)
+  }
+
+  const getTrend = (key) => {
+    if (weekData.length < 2) return 'neutral'
+    const recent = weekData.slice(-3).reduce((acc, day) => acc + (day[key] || 0), 0) / 3
+    const older = weekData.slice(0, 3).reduce((acc, day) => acc + (day[key] || 0), 0) / 3
+    if (recent > older + 0.5) return 'up'
+    if (recent < older - 0.5) return 'down'
+    return 'neutral'
+  }
+
+  if (showStats) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle className="w-8 h-8 text-green-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Entry Recorded! 🎉</h2>
+          <p className="text-lg text-gray-600">Streak: {streak} days</p>
+        </div>
+
+        {achievements.length > 0 && (
+          <div className="bg-yellow-50 p-4 rounded-lg mb-4 border border-yellow-200">
+            <h3 className="font-semibold text-yellow-900 mb-2">New Achievements! 🏆</h3>
+            <div className="space-y-1">
+              {achievements.slice(-3).map((achievement, index) => (
+                <div key={index} className="text-sm text-yellow-800 animate-pulse">
+                  ✨ {achievement}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="bg-blue-50 p-4 rounded-lg">
+          <h3 className="font-semibold text-blue-900 mb-3">Today's Summary</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {categories.map(cat => (
+              <div key={cat.key} className="bg-white p-3 rounded">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-600">{cat.label}</span>
+                  <span className="text-2xl">{cat.icon}</span>
+                </div>
+                <div className="text-2xl font-bold text-gray-900 mt-1">
+                  {wellnessData[cat.key]}/{cat.max}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-gray-900">Daily Wellness Check-In</h2>
+          <div className="flex items-center space-x-2 bg-green-100 px-3 py-1 rounded-full">
+            <span className="text-sm font-medium text-green-800">Streak: {streak} 🔥</span>
+          </div>
+        </div>
+        <p className="text-gray-600">Track your wellbeing across multiple dimensions</p>
+      </div>
+
+      {/* Week Overview Chart */}
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg mb-6">
+        <h3 className="font-semibold text-gray-900 mb-3">7-Day Trends</h3>
+        <div className="grid grid-cols-7 gap-2 mb-2">
+          {weekData.map((day, index) => (
+            <div key={index} className="text-center">
+              <div className="text-xs text-gray-500 mb-1">
+                {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+              </div>
+              <div className="bg-white rounded p-2 h-20 flex flex-col justify-end">
+                <div 
+                  className="bg-gradient-to-t from-blue-400 to-blue-200 rounded"
+                  style={{ height: `${(day.mood / 10) * 100}%`, minHeight: '4px' }}
+                ></div>
+              </div>
+              <div className="text-xs text-gray-600 mt-1">{day.mood}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Interactive Sliders */}
+      <div className="space-y-6 mb-6">
+        {categories.map(cat => {
+          const trend = getTrend(cat.key)
+          const average = getAverage(cat.key)
+          
+          return (
+            <div key={cat.key} className="bg-gray-50 p-4 rounded-lg">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center space-x-2">
+                  <span className="text-2xl">{cat.icon}</span>
+                  <span className="font-medium text-gray-900">{cat.label}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-500">Avg: {average}</span>
+                  {trend === 'up' && <TrendingUp className="w-4 h-4 text-green-600" />}
+                  {trend === 'down' && <TrendingUp className="w-4 h-4 text-red-600 transform rotate-180" />}
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-4">
+                <input
+                  type="range"
+                  min="0"
+                  max={cat.max}
+                  value={wellnessData[cat.key]}
+                  onChange={(e) => handleSliderChange(cat.key, parseInt(e.target.value))}
+                  className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  style={{
+                    background: `linear-gradient(to right, 
+                      ${cat.color === 'yellow' ? '#fbbf24' : 
+                        cat.color === 'blue' ? '#3b82f6' : 
+                        cat.color === 'red' ? '#ef4444' : 
+                        cat.color === 'green' ? '#10b981' : '#8b5cf6'} 0%, 
+                      ${cat.color === 'yellow' ? '#fbbf24' : 
+                        cat.color === 'blue' ? '#3b82f6' : 
+                        cat.color === 'red' ? '#ef4444' : 
+                        cat.color === 'green' ? '#10b981' : '#8b5cf6'} ${(wellnessData[cat.key] / cat.max) * 100}%, 
+                      #e5e7eb ${(wellnessData[cat.key] / cat.max) * 100}%, 
+                      #e5e7eb 100%)`
+                  }}
+                />
+                <span className="text-2xl font-bold text-gray-900 w-12 text-center">
+                  {cat.key === 'mood' ? moodEmojis[wellnessData[cat.key] - 1] : wellnessData[cat.key]}
+                </span>
+              </div>
+              
+              {cat.key === 'stress' && wellnessData.stress > 7 && (
+                <p className="text-xs text-red-600 mt-2">
+                  High stress detected. Consider trying relaxation techniques or talking to someone.
+                </p>
+              )}
+              {cat.key === 'sleep' && wellnessData.sleep < 6 && (
+                <p className="text-xs text-orange-600 mt-2">
+                  Low sleep can impact your wellbeing. Try to get 7-9 hours tonight.
+                </p>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Notes Section */}
+      <div className="mb-6">
+        <label className="block font-medium text-gray-900 mb-2">
+          Notes (Optional)
+        </label>
+        <textarea
+          value={wellnessData.notes}
+          onChange={(e) => setWellnessData(prev => ({ ...prev, notes: e.target.value }))}
+          placeholder="How are you feeling today? Any thoughts or reflections..."
+          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          rows="3"
+        />
+      </div>
+
+      {/* Insights */}
+      <div className="bg-purple-50 p-4 rounded-lg mb-6">
+        <h3 className="font-semibold text-purple-900 mb-2">Quick Insights</h3>
+        <div className="space-y-2 text-sm text-purple-800">
+          {wellnessData.mood >= 7 && wellnessData.physical >= 6 && (
+            <p>• Great combination! Physical activity and positive mood go hand in hand. 💪</p>
+          )}
+          {wellnessData.social >= 7 && (
+            <p>• Strong social connections are a key protective factor for wellbeing. 🤝</p>
+          )}
+          {wellnessData.stress > 6 && wellnessData.sleep < 7 && (
+            <p>• High stress + low sleep is tough. Prioritize rest tonight. 😴</p>
+          )}
+          {Object.values(wellnessData).filter(v => typeof v === 'number' && v >= 7).length >= 4 && (
+            <p>• You're doing great across multiple areas! Keep it up! ⭐</p>
+          )}
+        </div>
+      </div>
+
+      {/* Submit Button */}
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-green-600 text-white py-4 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+      >
+        <CheckCircle className="w-5 h-5" />
+        <span>Save Today's Entry</span>
+      </button>
+    </div>
+  )
+}
+
 // Progress Dashboard Component
 function ProgressDashboard({ userProgress }) {
   return (
@@ -554,6 +853,23 @@ function GamesPage({ userProgress, updateProgress }) {
     )
   }
 
+  if (currentGame === 'wellness-tracker') {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button
+            onClick={() => setCurrentGame(null)}
+            className="mb-6 text-blue-600 hover:text-blue-700 flex items-center space-x-1"
+          >
+            <ArrowRight className="w-4 h-4 transform rotate-180" />
+            <span>Back to Games</span>
+          </button>
+          <WellnessTracker onComplete={handleGameComplete} />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -604,8 +920,7 @@ function GamesPage({ userProgress, updateProgress }) {
               </button>
             </div>
           </div>
-
-          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-75">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
             <div className="bg-gradient-to-r from-green-400 to-green-500 p-6 rounded-t-xl">
               <Heart className="w-12 h-12 text-white mb-4" />
               <h3 className="text-xl font-bold text-white">Wellness Tracker</h3>
@@ -614,13 +929,13 @@ function GamesPage({ userProgress, updateProgress }) {
               <p className="text-gray-600 mb-4">Build healthy habits and track your mental and physical wellbeing journey.</p>
               <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
                 <span>Difficulty: All Levels</span>
-                <span>Duration: Ongoing</span>
+                <span>Duration: Daily</span>
               </div>
               <button 
-                disabled
-                className="w-full bg-gray-400 text-white py-3 rounded-lg font-medium cursor-not-allowed"
+                onClick={() => setCurrentGame('wellness-tracker')}
+                className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
               >
-                Coming Soon
+                Start Tracking
               </button>
             </div>
           </div>
