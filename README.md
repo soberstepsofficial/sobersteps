@@ -1,12 +1,92 @@
-# React + Vite
+# SoberSteps
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SoberSteps — the website frontend. This repository is a Vite + React single-page app styled with Tailwind CSS.
 
-Currently, two official plugins are available:
+## At a glance
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Framework: React (v19)
+- Dev server & build: Vite
+- Styling: Tailwind CSS + PostCSS
+- Router: react-router-dom
+- Icons: lucide-react
 
-## Expanding the ESLint configuration
+This README includes quick local dev, build, and deployment instructions and points to the key files to edit.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Quick start
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Start development server (HMR):
+
+```bash
+npm run dev
+```
+
+Open the address printed by Vite (usually http://localhost:5173).
+
+## Build & preview
+
+Make a production build:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## Scripts (from package.json)
+
+- `dev` — vite dev server
+- `build` — vite build
+- `preview` — vite preview
+- `lint` — eslint .
+
+## Key files and where to make changes
+
+- `src/main.jsx` — app boot/renderer; where providers and router are mounted
+- `src/App.jsx` — main application component and routing (add pages/routes here)
+- `src/index.css` — global styles; imports Tailwind directives
+- `tailwind.config.js` — configure colors/utilities and safelist classes
+- `vite.config.js` — Vite plugins and build tweaks
+- `public/` — static assets served as-is
+- `src/assets/` — images and assets that go through bundling
+
+Editing notes:
+- Add new pages under `src/pages/` (or `src/`) and register routes in `src/App.jsx`.
+- Use Tailwind utility classes for UI; extend tokens in `tailwind.config.js` if needed.
+
+## Linting
+
+Run ESLint across the project with:
+
+```bash
+npm run lint
+```
+
+## Deployment
+
+The site builds to `dist/`. Deploy to any static host (Vercel, Netlify, GitHub Pages, S3). For client-side routing, ensure 404s are rewritten to `index.html`.
+
+## Conventions and repo-specific patterns
+
+- Utility-first styling: Tailwind classes in JSX are the primary styling approach.
+- Icons used as React components from `lucide-react`.
+- Keep publicly served static files in `public/`. Use `src/assets/` when assets are referenced/imported in code.
+
+## Deployment notes & license
+
+See the repository `LICENSE` file (MIT) for licensing details: `./LICENSE`.
+
+For a platform-specific Vercel guide, see `DEPLOY_VERCEL.md` in the repo root.
+
+---
+
+If anything here should be different (preferred commands, hosting provider, or extra notes), tell me and I will update the README.
