@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
 import { Smile, CheckCircle, Users, Home, Gamepad2, BookOpen, Info, HelpCircle, Menu, X, Play, Award, Target, Heart, ArrowRight, RotateCcw, Star, TrendingUp } from 'lucide-react'
 
@@ -411,8 +411,10 @@ function PeerPressureGame({ onComplete }) {
 }
 
 // Wellness Tracker Game Component
+// Replace the WellnessTracker component with this enhanced version:
+
 function WellnessTracker({ onComplete }) {
-  const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0])
+  const [currentDate] = useState(new Date().toISOString().split('T')[0])
   const [wellnessData, setWellnessData] = useState({
     mood: 5,
     sleep: 7,
@@ -425,104 +427,175 @@ function WellnessTracker({ onComplete }) {
   const [showStats, setShowStats] = useState(false)
   const [achievements, setAchievements] = useState([])
   const [streak, setStreak] = useState(0)
-
-  // Initialize week data
-  useState(() => {
-    const week = []
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date()
-      date.setDate(date.getDate() - i)
-      week.push({
-        date: date.toISOString().split('T')[0],
-        mood: Math.floor(Math.random() * 3) + 5,
-        sleep: Math.floor(Math.random() * 2) + 6,
-        stress: Math.floor(Math.random() * 3) + 4,
-        physical: Math.floor(Math.random() * 3) + 4,
-        social: Math.floor(Math.random() * 3) + 4
-      })
-    }
-    setWeekData(week)
-  }, [])
+  const [hasEnteredToday, setHasEnteredToday] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [selectedMetric, setSelectedMetric] = useState('mood')
 
   const moodEmojis = ['😢', '😟', '😕', '😐', '🙂', '😊', '😄', '😁', '🤩', '🥳']
   const categories = [
-    { key: 'mood', label: 'Mood', icon: '😊', color: 'yellow', max: 10 },
-    { key: 'sleep', label: 'Sleep Hours', icon: '😴', color: 'blue', max: 12 },
-    { key: 'stress', label: 'Stress Level', icon: '😰', color: 'red', max: 10, inverse: true },
-    { key: 'physical', label: 'Physical Activity', icon: '🏃', color: 'green', max: 10 },
-    { key: 'social', label: 'Social Connection', icon: '👥', color: 'purple', max: 10 }
+    { key: 'mood', label: 'Mood', icon: '😊', color: 'yellow', gradient: 'from-yellow-300 to-yellow-500', max: 10 },
+    { key: 'sleep', label: 'Sleep Hours', icon: '😴', color: 'blue', gradient: 'from-blue-300 to-blue-500', max: 12 },
+    { key: 'stress', label: 'Stress Level', icon: '😰', color: 'red', gradient: 'from-red-300 to-red-500', max: 10 },
+    { key: 'physical', label: 'Physical Activity', icon: '🏃', color: 'green', gradient: 'from-green-300 to-green-500', max: 10 },
+    { key: 'social', label: 'Social Connection', icon: '👥', color: 'purple', gradient: 'from-purple-300 to-purple-500', max: 10 }
   ]
 
-  const handleSliderChange = (key, value) => {
-    setWellnessData(prev => ({ ...prev, [key]: value }))
+  // Initialize empty week structure
+  const initializeEmptyWeek = () => {
+    const emptyWeek = []
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date()
+      date.setDate(date.getDate() - i)
+      emptyWeek.push({
+        date: date.toISOString().split('T')[0],
+        mood: null,
+        sleep: null,
+        stress: null,
+        physical: null,
+        social: null,
+        notes: ''
+      })
+    }
+    return emptyWeek
   }
 
-  const handleSubmit = () => {
-    // Add to week data
+  // Load data on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        if (typeof window.storage === 'undefined') {
+          console.log('Storage API not available, using session state only')
+          setWeekData(initializeEmptyWeek())
+          setIsLoading(false)
+          return
+        }
+
+        const savedWeekData = await window.storage.get('wellness-week-data')
+        const savedStreak = await window.storage.get('wellness-streak')
+        const savedAchievements = await window.storage.get('wellness-achievements')
+        
+        if (savedWeekData && savedWeekData.value) {
+          const parsedData = JSON.parse(savedWeekData.value)
+          setWeekData(parsedData)
+          
+          const todayEntry = parsedData.find(entry => entry.date === currentDate)
+          if (todayEntry) {
+            setHasEnteredToday(true)
+            setWellnessData(todayEntry)
+          }
+        } else {
+          setWeekData(initializeEmptyWeek())
+        }
+        
+        if (savedStreak && savedStreak.value) {
+          setStreak(parseInt(savedStreak.value))
+        }
+        
+        if (savedAchievements && savedAchievements.value) {
+          setAchievements(JSON.parse(savedAchievements.value))
+        }
+      } catch (error) {
+        console.log('Error loading data, starting fresh:', error)
+        setWeekData(initializeEmptyWeek())
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    
+    loadData()
+  }, [currentDate])
+
+  const handleSliderChange = (key, value) => {
+    setWellnessData(prev => ({ ...prev, [key]: parseInt(value) }))
+  }
+
+  const handleSubmit = async () => {
     const newEntry = {
       date: currentDate,
       ...wellnessData
     }
     
-    const updatedWeek = [...weekData.filter(d => d.date !== currentDate), newEntry]
+    const filteredWeek = weekData.filter(d => d.date !== currentDate)
+    const updatedWeek = [...filteredWeek, newEntry]
       .sort((a, b) => new Date(a.date) - new Date(b.date))
       .slice(-7)
     
     setWeekData(updatedWeek)
     
-    // Calculate streak
-    const newStreak = streak + 1
+    let newStreak = hasEnteredToday ? streak : streak + 1
     setStreak(newStreak)
+    setHasEnteredToday(true)
     
-    // Check achievements
     const newAchievements = []
-    if (newStreak === 3) newAchievements.push('3-Day Streak! 🔥')
-    if (newStreak === 7) newAchievements.push('Week Warrior! 🏆')
+    if (newStreak === 3 && !achievements.includes('3-Day Streak! 🔥')) {
+      newAchievements.push('3-Day Streak! 🔥')
+    }
+    if (newStreak === 7 && !achievements.includes('Week Warrior! 🏆')) {
+      newAchievements.push('Week Warrior! 🏆')
+    }
     if (wellnessData.mood >= 8) newAchievements.push('Positive Vibes! ✨')
     if (wellnessData.sleep >= 8) newAchievements.push('Well Rested! 💤')
     if (wellnessData.physical >= 7) newAchievements.push('Active Lifestyle! 💪')
     
+    const allAchievements = [...achievements, ...newAchievements]
     if (newAchievements.length > 0) {
-      setAchievements(prev => [...prev, ...newAchievements])
+      setAchievements(allAchievements)
     }
     
-    // Calculate score
+    try {
+      if (typeof window.storage !== 'undefined') {
+        await window.storage.set('wellness-week-data', JSON.stringify(updatedWeek))
+        await window.storage.set('wellness-streak', newStreak.toString())
+        await window.storage.set('wellness-achievements', JSON.stringify(allAchievements))
+      }
+    } catch (error) {
+      console.log('Could not save to storage:', error)
+    }
+    
     const totalScore = Object.values(wellnessData)
       .filter(v => typeof v === 'number')
       .reduce((sum, val) => sum + val, 0)
     
     onComplete('wellness-tracker', totalScore)
-    
-    // Show stats
     setShowStats(true)
-    
-    // Reset for next day
-    setTimeout(() => {
-      setShowStats(false)
-      setWellnessData({
-        mood: 5,
-        sleep: 7,
-        stress: 5,
-        physical: 5,
-        social: 5,
-        notes: ''
-      })
-    }, 5000)
   }
 
   const getAverage = (key) => {
-    if (weekData.length === 0) return 0
-    const sum = weekData.reduce((acc, day) => acc + (day[key] || 0), 0)
-    return (sum / weekData.length).toFixed(1)
+    const validEntries = weekData.filter(day => day[key] !== null && day[key] !== undefined)
+    if (validEntries.length === 0) return '0.0'
+    const sum = validEntries.reduce((acc, day) => acc + day[key], 0)
+    return (sum / validEntries.length).toFixed(1)
   }
 
   const getTrend = (key) => {
-    if (weekData.length < 2) return 'neutral'
-    const recent = weekData.slice(-3).reduce((acc, day) => acc + (day[key] || 0), 0) / 3
-    const older = weekData.slice(0, 3).reduce((acc, day) => acc + (day[key] || 0), 0) / 3
-    if (recent > older + 0.5) return 'up'
-    if (recent < older - 0.5) return 'down'
+    const validEntries = weekData.filter(day => day[key] !== null && day[key] !== undefined)
+    if (validEntries.length < 2) return 'neutral'
+    
+    const halfPoint = Math.floor(validEntries.length / 2)
+    const recent = validEntries.slice(halfPoint)
+    const older = validEntries.slice(0, halfPoint)
+    
+    if (recent.length === 0 || older.length === 0) return 'neutral'
+    
+    const recentAvg = recent.reduce((acc, day) => acc + day[key], 0) / recent.length
+    const olderAvg = older.reduce((acc, day) => acc + day[key], 0) / older.length
+    
+    if (recentAvg > olderAvg + 0.5) return 'up'
+    if (recentAvg < olderAvg - 0.5) return 'down'
     return 'neutral'
+  }
+
+  // getColorForValue removed (unused) to avoid lint warnings
+
+  if (isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4">Loading your wellness data...</p>
+        </div>
+      </div>
+    )
   }
 
   if (showStats) {
@@ -533,15 +606,15 @@ function WellnessTracker({ onComplete }) {
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Entry Recorded! 🎉</h2>
-          <p className="text-lg text-gray-600">Streak: {streak} days</p>
+          <p className="text-lg text-gray-600">Streak: {streak} {streak === 1 ? 'day' : 'days'}</p>
         </div>
 
         {achievements.length > 0 && (
           <div className="bg-yellow-50 p-4 rounded-lg mb-4 border border-yellow-200">
-            <h3 className="font-semibold text-yellow-900 mb-2">New Achievements! 🏆</h3>
+            <h3 className="font-semibold text-yellow-900 mb-2">Achievements! 🏆</h3>
             <div className="space-y-1">
               {achievements.slice(-3).map((achievement, index) => (
-                <div key={index} className="text-sm text-yellow-800 animate-pulse">
+                <div key={index} className="text-sm text-yellow-800">
                   ✨ {achievement}
                 </div>
               ))}
@@ -549,7 +622,7 @@ function WellnessTracker({ onComplete }) {
           </div>
         )}
 
-        <div className="bg-blue-50 p-4 rounded-lg">
+        <div className="bg-blue-50 p-4 rounded-lg mb-4">
           <h3 className="font-semibold text-blue-900 mb-3">Today's Summary</h3>
           <div className="grid grid-cols-2 gap-3">
             {categories.map(cat => (
@@ -565,98 +638,222 @@ function WellnessTracker({ onComplete }) {
             ))}
           </div>
         </div>
+
+        <button
+          onClick={() => setShowStats(false)}
+          className="w-full bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
+        >
+          Close
+        </button>
       </div>
     )
   }
+
+  const selectedCategory = categories.find(c => c.key === selectedMetric)
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Daily Wellness Check-In</h2>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Daily Wellness Check-In</h2>
+            <p className="text-sm text-gray-500">
+              {new Date(currentDate).toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}
+            </p>
+          </div>
           <div className="flex items-center space-x-2 bg-green-100 px-3 py-1 rounded-full">
             <span className="text-sm font-medium text-green-800">Streak: {streak} 🔥</span>
           </div>
         </div>
-        <p className="text-gray-600">Track your wellbeing across multiple dimensions</p>
+        
+        {hasEnteredToday && (
+          <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg mb-4">
+            <p className="text-sm text-blue-800">✅ You can update your entry for today</p>
+          </div>
+        )}
       </div>
 
-      {/* Week Overview Chart */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg mb-6">
-        <h3 className="font-semibold text-gray-900 mb-3">7-Day Trends</h3>
-        <div className="grid grid-cols-7 gap-2 mb-2">
-          {weekData.map((day, index) => (
-            <div key={index} className="text-center">
-              <div className="text-xs text-gray-500 mb-1">
-                {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
-              </div>
-              <div className="bg-white rounded p-2 h-20 flex flex-col justify-end">
-                <div 
-                  className="bg-gradient-to-t from-blue-400 to-blue-200 rounded"
-                  style={{ height: `${(day.mood / 10) * 100}%`, minHeight: '4px' }}
-                ></div>
-              </div>
-              <div className="text-xs text-gray-600 mt-1">{day.mood}</div>
-            </div>
+      {/* Enhanced Week Overview Chart */}
+      <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6 rounded-xl mb-6 shadow-inner">
+        <h3 className="font-semibold text-gray-900 mb-4">7-Day Wellness Trends</h3>
+        
+        {/* Metric Selector */}
+        <div className="flex space-x-2 mb-4 overflow-x-auto pb-2">
+          {categories.map(cat => (
+            <button
+              key={cat.key}
+              onClick={() => setSelectedMetric(cat.key)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap relative overflow-hidden ${
+                selectedMetric === cat.key
+                  ? `bg-gradient-to-r ${cat.gradient} text-white shadow-md`
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+              aria-pressed={selectedMetric === cat.key}
+            >
+              <span className="mr-1">{cat.icon}</span>
+              {cat.label}
+            </button>
           ))}
+        </div>
+
+        {/* Line Chart Style Visualization */}
+        <div className="bg-white rounded-lg p-4 relative">
+          <div className="flex items-end justify-between h-48 space-x-2">
+            {weekData.map((day, index) => {
+              const isToday = day.date === currentDate
+              const value = day[selectedMetric]
+              const hasData = value !== null && value !== undefined
+              const max = selectedCategory.max
+              const heightPercentage = hasData ? (value / max) * 100 : 0
+              
+              return (
+                <div key={index} className="flex-1 flex flex-col items-center group relative">
+                  {/* Tooltip */}
+                  {hasData && (
+                    <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                      {value}/{max}
+                    </div>
+                  )}
+                  
+                  {/* Bar with animation */}
+                  <div 
+                    className={`w-full rounded-t-lg transition-all duration-500 ease-out relative overflow-hidden ${
+                      isToday ? 'ring-2 ring-offset-2 ring-blue-400' : ''
+                    }`}
+                    style={{ 
+                      height: `${heightPercentage}%`,
+                      minHeight: hasData ? '8px' : '2px'
+                    }}
+                  >
+                    {hasData ? (
+                      <>
+                        <div className={`absolute inset-0 bg-gradient-to-t ${selectedCategory.gradient} animate-pulse`} />
+                        <div className={`absolute inset-0 bg-gradient-to-t ${selectedCategory.gradient} opacity-70`} />
+                      </>
+                    ) : (
+                      <div className="absolute inset-0 bg-gray-200" />
+                    )}
+                  </div>
+                  
+                  {/* Day label */}
+                  <div className="mt-2 text-center">
+                    <div className={`text-xs font-medium ${isToday ? 'text-blue-600' : 'text-gray-500'}`}>
+                      {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                    </div>
+                    <div className={`text-sm font-bold mt-1 ${hasData ? 'text-gray-900' : 'text-gray-400'}`}>
+                      {hasData ? value : '-'}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+          
+          {/* Grid lines */}
+          <div className="absolute inset-0 pointer-events-none">
+            {[0, 25, 50, 75, 100].map((percent) => (
+              <div
+                key={percent}
+                className="absolute w-full border-t border-gray-200"
+                style={{ bottom: `${percent}%` }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Summary */}
+        <div className="grid grid-cols-3 gap-3 mt-4">
+          <div className="bg-white rounded-lg p-3 text-center">
+            <div className="text-xs text-gray-500">Average</div>
+            <div className="text-lg font-bold text-gray-900">{getAverage(selectedMetric)}</div>
+          </div>
+          <div className="bg-white rounded-lg p-3 text-center">
+            <div className="text-xs text-gray-500">Trend</div>
+            <div className="text-lg font-bold flex items-center justify-center">
+              {getTrend(selectedMetric) === 'up' && <span className="text-green-600">↑ Rising</span>}
+              {getTrend(selectedMetric) === 'down' && <span className="text-red-600">↓ Falling</span>}
+              {getTrend(selectedMetric) === 'neutral' && <span className="text-gray-600">→ Stable</span>}
+            </div>
+          </div>
+          <div className="bg-white rounded-lg p-3 text-center">
+            <div className="text-xs text-gray-500">Days Logged</div>
+            <div className="text-lg font-bold text-gray-900">
+              {weekData.filter(d => d[selectedMetric] !== null).length}/7
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Interactive Sliders */}
+      {/* Fluid Interactive Sliders */}
       <div className="space-y-6 mb-6">
         {categories.map(cat => {
           const trend = getTrend(cat.key)
           const average = getAverage(cat.key)
+          const percentage = (wellnessData[cat.key] / cat.max) * 100
           
           return (
-            <div key={cat.key} className="bg-gray-50 p-4 rounded-lg">
-              <div className="flex justify-between items-center mb-2">
+            <div key={cat.key} className="bg-gradient-to-r from-gray-50 to-gray-100 p-5 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center space-x-2">
-                  <span className="text-2xl">{cat.icon}</span>
-                  <span className="font-medium text-gray-900">{cat.label}</span>
+                  <span className="text-3xl">{cat.icon}</span>
+                  <div>
+                    <span className="font-semibold text-gray-900 block">{cat.label}</span>
+                    <span className="text-xs text-gray-500">7-day avg: {average}</span>
+                  </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500">Avg: {average}</span>
-                  {trend === 'up' && <TrendingUp className="w-4 h-4 text-green-600" />}
-                  {trend === 'down' && <TrendingUp className="w-4 h-4 text-red-600 transform rotate-180" />}
+                  {trend === 'up' && <TrendingUp className="w-5 h-5 text-green-600" />}
+                  {trend === 'down' && <TrendingUp className="w-5 h-5 text-red-600 transform rotate-180" />}
+                  <div className="text-right">
+                    <div className="text-3xl font-bold text-gray-900">
+                      {cat.key === 'mood' ? moodEmojis[wellnessData[cat.key] - 1] : wellnessData[cat.key]}
+                    </div>
+                    <div className="text-xs text-gray-500">/{cat.max}</div>
+                  </div>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-4">
+              {/* Fluid Progress Bar with full-area invisible range overlay */}
+              <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden mb-2 shadow-inner">
+                <div
+                  className={`absolute top-0 left-0 h-full bg-gradient-to-r ${cat.gradient} transition-all duration-300 ease-out rounded-full`}
+                  style={{ width: `${percentage}%` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse" />
+                </div>
+
+                {/*
+                  Place the range input inside the same relative container and expand its
+                  hit area (top/bottom) so clicks/touches anywhere on the bar register.
+                  The input remains visually hidden (opacity-0) but receives pointer events.
+                */}
                 <input
                   type="range"
-                  min="0"
+                  min="1"
                   max={cat.max}
                   value={wellnessData[cat.key]}
-                  onChange={(e) => handleSliderChange(cat.key, parseInt(e.target.value))}
-                  className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  style={{
-                    background: `linear-gradient(to right, 
-                      ${cat.color === 'yellow' ? '#fbbf24' : 
-                        cat.color === 'blue' ? '#3b82f6' : 
-                        cat.color === 'red' ? '#ef4444' : 
-                        cat.color === 'green' ? '#10b981' : '#8b5cf6'} 0%, 
-                      ${cat.color === 'yellow' ? '#fbbf24' : 
-                        cat.color === 'blue' ? '#3b82f6' : 
-                        cat.color === 'red' ? '#ef4444' : 
-                        cat.color === 'green' ? '#10b981' : '#8b5cf6'} ${(wellnessData[cat.key] / cat.max) * 100}%, 
-                      #e5e7eb ${(wellnessData[cat.key] / cat.max) * 100}%, 
-                      #e5e7eb 100%)`
-                  }}
+                  onChange={(e) => handleSliderChange(cat.key, e.target.value)}
+                  className="absolute left-0 right-0 w-full appearance-none cursor-pointer opacity-0 z-20"
+                  style={{ top: '-8px', bottom: '-8px' }}
                 />
-                <span className="text-2xl font-bold text-gray-900 w-12 text-center">
-                  {cat.key === 'mood' ? moodEmojis[wellnessData[cat.key] - 1] : wellnessData[cat.key]}
-                </span>
               </div>
-              
+
+              {/* Warning messages */}
               {cat.key === 'stress' && wellnessData.stress > 7 && (
-                <p className="text-xs text-red-600 mt-2">
-                  High stress detected. Consider trying relaxation techniques or talking to someone.
+                <p className="text-xs text-red-600 mt-2 flex items-center">
+                  <span className="mr-1">⚠️</span>
+                  High stress detected. Consider relaxation techniques.
                 </p>
               )}
               {cat.key === 'sleep' && wellnessData.sleep < 6 && (
-                <p className="text-xs text-orange-600 mt-2">
-                  Low sleep can impact your wellbeing. Try to get 7-9 hours tonight.
+                <p className="text-xs text-orange-600 mt-2 flex items-center">
+                  <span className="mr-1">⚠️</span>
+                  Low sleep can impact wellbeing. Aim for 7-9 hours.
                 </p>
               )}
             </div>
@@ -667,32 +864,35 @@ function WellnessTracker({ onComplete }) {
       {/* Notes Section */}
       <div className="mb-6">
         <label className="block font-medium text-gray-900 mb-2">
-          Notes (Optional)
+          📝 Notes (Optional)
         </label>
         <textarea
           value={wellnessData.notes}
           onChange={(e) => setWellnessData(prev => ({ ...prev, notes: e.target.value }))}
           placeholder="How are you feeling today? Any thoughts or reflections..."
-          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          className="w-full p-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
           rows="3"
         />
       </div>
 
       {/* Insights */}
-      <div className="bg-purple-50 p-4 rounded-lg mb-6">
-        <h3 className="font-semibold text-purple-900 mb-2">Quick Insights</h3>
+      <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-xl mb-6 border border-purple-100">
+        <h3 className="font-semibold text-purple-900 mb-3 flex items-center">
+          <span className="text-xl mr-2">💡</span>
+          Quick Insights
+        </h3>
         <div className="space-y-2 text-sm text-purple-800">
           {wellnessData.mood >= 7 && wellnessData.physical >= 6 && (
-            <p>• Great combination! Physical activity and positive mood go hand in hand. 💪</p>
+            <p className="flex items-start"><span className="mr-2">•</span><span>Great combo! Physical activity and positive mood go hand in hand. 💪</span></p>
           )}
           {wellnessData.social >= 7 && (
-            <p>• Strong social connections are a key protective factor for wellbeing. 🤝</p>
+            <p className="flex items-start"><span className="mr-2">•</span><span>Strong social connections support wellbeing. 🤝</span></p>
           )}
           {wellnessData.stress > 6 && wellnessData.sleep < 7 && (
-            <p>• High stress + low sleep is tough. Prioritize rest tonight. 😴</p>
+            <p className="flex items-start"><span className="mr-2">•</span><span>High stress + low sleep is tough. Prioritize rest tonight. 😴</span></p>
           )}
           {Object.values(wellnessData).filter(v => typeof v === 'number' && v >= 7).length >= 4 && (
-            <p>• You're doing great across multiple areas! Keep it up! ⭐</p>
+            <p className="flex items-start"><span className="mr-2">•</span><span>You're doing great across multiple areas! Keep up the amazing work! ⭐</span></p>
           )}
         </div>
       </div>
@@ -700,7 +900,7 @@ function WellnessTracker({ onComplete }) {
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        className="w-full bg-green-600 text-white py-4 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
+        className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
       >
         <CheckCircle className="w-5 h-5" />
         <span>Save Today's Entry</span>
@@ -768,14 +968,14 @@ function Header() {
           </Link>
 
           <div className="hidden md:flex items-center space-x-8 ml-8">
-            {navItems.map(({ id, label, icon: Icon, path }) => (
+            {navItems.map((item) => (
               <Link
-                key={id}
-                to={path}
+                key={item.id}
+                to={item.path}
                 className="flex items-center space-x-1 px-3 py-2 text-sm font-medium rounded-md transition-colors text-gray-700 hover:text-blue-600 hover:bg-gray-50"
               >
-                <Icon className="w-4 h-4" />
-                <span>{label}</span>
+                {React.createElement(item.icon, { className: 'w-4 h-4' })}
+                <span>{item.label}</span>
               </Link>
             ))}
           </div>
@@ -792,15 +992,15 @@ function Header() {
 
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200 py-4">
-            {navItems.map(({ id, label, icon: Icon, path }) => (
+            {navItems.map((item) => (
               <Link
-                key={id}
-                to={path}
+                key={item.id}
+                to={item.path}
                 onClick={() => setMobileMenuOpen(false)}
                 className="flex items-center space-x-2 w-full px-4 py-2 text-sm font-medium text-gray-700"
               >
-                <Icon className="w-4 h-4" />
-                <span>{label}</span>
+                {React.createElement(item.icon, { className: 'w-4 h-4' })}
+                <span>{item.label}</span>
               </Link>
             ))}
           </div>
@@ -949,8 +1149,8 @@ function GamesPage({ userProgress, updateProgress }) {
 function HomePage() {
   const navigate = useNavigate()
   return (
-    <div>
-      <div className="bg-gradient-to-br from-blue-50 to-purple-50 py-20">
+    <div className="perspective-wrap">
+      <div className="enter-perspective bg-gradient-to-br from-blue-50 to-purple-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-6xl font-bold text-gray-900 mb-6">
@@ -1072,6 +1272,8 @@ function HomePage() {
 function LearnPage() {
   const [selectedTopic, setSelectedTopic] = useState(null)
 
+  // (Featured article content moved into topic data below)
+
   const topics = [
     {
       id: 'peer-pressure',
@@ -1092,6 +1294,23 @@ function LearnPage() {
           'Find allies: Identify others who share your values'
         ],
         research: 'Studies show that resistance skills training can reduce substance use initiation by up to 40% (Botvin & Griffin, 2004).'
+  ,
+  fullArticle: `
+Understanding Peer Pressure
+
+Peer pressure is the influence peers may exert to encourage changes in attitudes or behavior to fit group norms. It can be direct (explicit requests), indirect (social expectations), or internal (desire to belong).
+
+Recognizing peer pressure starts with awareness: notice when a choice feels pushed, when language is coercive, or when consequences are minimized by others.
+
+Practical strategies:
+
+- Use a short, firm refusal ("No thanks, I'm not into that").
+- Offer an alternative activity to redirect the group.
+- Enlist an ally who supports your choice.
+- Practice role-playing to build confidence before real situations.
+
+Bottom line: Peer pressure can be navigated with preparation, assertive communication, and support. This article is released under CC-BY-4.0; you may reuse with attribution.
+  `
       }
     },
     {
@@ -1225,6 +1444,12 @@ function LearnPage() {
               <h2 className="text-lg font-semibold text-gray-900 mb-3">Research Foundation</h2>
               <p className="text-gray-700 text-sm">{topic.content.research}</p>
             </div>
+
+            {topic.content.fullArticle && (
+              <div className="mt-8 prose prose-lg max-w-none bg-white p-6 rounded-lg">
+                <div dangerouslySetInnerHTML={{ __html: topic.content.fullArticle.split('\n').join('<br/>') }} />
+              </div>
+            )}
           </article>
         </div>
       </div>
@@ -1233,7 +1458,7 @@ function LearnPage() {
 
   return (
     <div className="min-h-screen bg-white py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 enter-perspective">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Evidence-Based Learning Resources</h1>
           <p className="text-xl text-gray-600">Research-backed information to support healthy decision-making</p>
@@ -1258,6 +1483,8 @@ function LearnPage() {
             </div>
           ))}
         </div>
+
+        
 
         <div className="mt-12 bg-blue-50 p-6 rounded-lg">
           <h2 className="text-xl font-semibold text-blue-900 mb-3">Need Additional Support?</h2>
