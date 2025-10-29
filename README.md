@@ -1,6 +1,6 @@
 # SoberSteps
 
-SoberSteps — the website frontend. This repository is a Vite + React single-page app styled with Tailwind CSS.
+SoberSteps - the website frontend. This repository is a Vite + React single-page app styled with Tailwind CSS.
 
 ## At a glance
 
@@ -44,20 +44,20 @@ npm run preview
 
 ## Scripts (from package.json)
 
-- `dev` — vite dev server
-- `build` — vite build
-- `preview` — vite preview
-- `lint` — eslint .
+- `dev` - vite dev server
+- `build` - vite build
+- `preview` - vite preview
+- `lint` - eslint .
 
 ## Key files and where to make changes
 
-- `src/main.jsx` — app boot/renderer; where providers and router are mounted
-- `src/App.jsx` — main application component and routing (add pages/routes here)
-- `src/index.css` — global styles; imports Tailwind directives
-- `tailwind.config.js` — configure colors/utilities and safelist classes
-- `vite.config.js` — Vite plugins and build tweaks
-- `public/` — static assets served as-is
-- `src/assets/` — images and assets that go through bundling
+- `src/main.jsx` - app boot/renderer; where providers and router are mounted
+- `src/App.jsx` - main application component and routing (add pages/routes here)
+- `src/index.css` - global styles; imports Tailwind directives
+- `tailwind.config.js` - configure colors/utilities and safelist classes
+- `vite.config.js` - Vite plugins and build tweaks
+- `public/` - static assets served as-is
+- `src/assets/` - images and assets that go through bundling
 
 Editing notes:
 - Add new pages under `src/pages/` (or `src/`) and register routes in `src/App.jsx`.
@@ -86,7 +86,3 @@ The site builds to `dist/`. Deploy to any static host (Vercel, Netlify, GitHub P
 See the repository `LICENSE` file (MIT) for licensing details: `./LICENSE`.
 
 For a platform-specific Vercel guide, see `DEPLOY_VERCEL.md` in the repo root.
-
----
-
-If anything here should be different (preferred commands, hosting provider, or extra notes), tell me and I will update the README.
