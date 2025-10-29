@@ -1,3 +1,4 @@
+/*app.jsx*/
 import React, { useState , useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
 import { Smile, CheckCircle, Users, Home, Gamepad2, BookOpen, Info, HelpCircle, Menu, X, Play, Award, Target, Heart, ArrowRight, RotateCcw, Star, TrendingUp } from 'lucide-react'
@@ -958,7 +959,7 @@ function Header() {
   ]
 
   return (
-    <header className="bg-white shadow-lg sticky top-0 z-50">
+    <header className="bg-white shadow-lg sticky top-0 z-50 header-enter">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center h-16">
           <Link to="/" className="flex-shrink-0">
@@ -1081,7 +1082,7 @@ function GamesPage({ userProgress, updateProgress }) {
         <ProgressDashboard userProgress={userProgress} />
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 reveal-on-scroll card-enter">
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-t-xl">
               <Target className="w-12 h-12 text-white mb-4" />
               <h3 className="text-xl font-bold text-white">Decision Simulator</h3>
@@ -1101,7 +1102,7 @@ function GamesPage({ userProgress, updateProgress }) {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 reveal-on-scroll card-enter">
             <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-6 rounded-t-xl">
               <Users className="w-12 h-12 text-white mb-4" />
               <h3 className="text-xl font-bold text-white">Peer Pressure Challenge</h3>
@@ -1120,7 +1121,7 @@ function GamesPage({ userProgress, updateProgress }) {
               </button>
             </div>
           </div>
-          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 reveal-on-scroll card-enter">
             <div className="bg-gradient-to-r from-green-400 to-green-500 p-6 rounded-t-xl">
               <Heart className="w-12 h-12 text-white mb-4" />
               <h3 className="text-xl font-bold text-white">Wellness Tracker</h3>
@@ -1184,7 +1185,7 @@ function HomePage() {
       </div>
 
       {/* Games Preview Section */}
-      <div className="py-20 bg-white">
+      <div className="py-20 bg-white section-enter section-enter-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Evidence-Based Learning Games</h2>
@@ -1224,7 +1225,7 @@ function HomePage() {
       </div>
 
       {/* Research-Based Evidence Section */}
-      <div className="py-20 bg-gray-50">
+      <div className="py-20 bg-gray-50 section-enter section-enter-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Interactive Learning Works</h2>
@@ -1298,19 +1299,21 @@ function LearnPage() {
   fullArticle: `
 Understanding Peer Pressure
 
-Peer pressure is the influence peers may exert to encourage changes in attitudes or behavior to fit group norms. It can be direct (explicit requests), indirect (social expectations), or internal (desire to belong).
+Peer pressure is the influence exerted by peers to encourage someone to change their attitudes, values, or behaviours in order to conform to group norms. It can be direct (explicit requests or demands), indirect (subtle social cues and expectations), or internal (an individual's desire to fit in).
 
-Recognizing peer pressure starts with awareness: notice when a choice feels pushed, when language is coercive, or when consequences are minimized by others.
+Adolescents are often particularly sensitive to peer influence. Research shows resistance to peer pressure tends to increase with age, and factors such as gender and parental behaviors can affect vulnerability. Peer influence plays a role in behaviors including substance use, sexual activity, and risk-taking. School-based prevention programs and resistance skills training have mixed effectiveness depending on age and program design, but targeted training can reduce initiation of risky behaviours in some groups.
 
-Practical strategies:
+Practical strategies to manage peer pressure:
+- Use a short, firm refusal: "No thanks, I'm not into that."
+- Offer alternatives: suggest different activities the group can do together.
+- Keep responses brief and confident; over-explaining can weaken your position.
+- Enlist allies who share your values and can support your decision.
+- Practice role-play to prepare for real-life situations.
 
-- Use a short, firm refusal ("No thanks, I'm not into that").
-- Offer an alternative activity to redirect the group.
-- Enlist an ally who supports your choice.
-- Practice role-playing to build confidence before real situations.
+When to seek help: Persistent pressure that leads to harmful or risky behaviour, or feeling coerced, are signs to talk with a trusted adult, counselor, or support service.
 
-Bottom line: Peer pressure can be navigated with preparation, assertive communication, and support. This article is released under CC-BY-4.0; you may reuse with attribution.
-  `
+This excerpt is adapted from the Wikipedia article "Peer pressure" (text available under the Creative Commons Attribution-ShareAlike 4.0 International License).
+`
       }
     },
     {
@@ -1334,6 +1337,19 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
           'Availability of support and resources'
         ],
         research: 'Research in developmental psychology shows that structured decision-making frameworks improve adolescent choice quality (Steinberg, 2013).'
+      ,
+      fullArticle: `
+Decision-making — summary (from Wikipedia)
+
+Decision-making refers to the cognitive process of selecting a course of action from multiple alternatives. It includes identifying and evaluating options, weighing consequences, and choosing a path that aligns with one's goals and values. Decision-making techniques range from individual methods (decisional balance sheets, satisficing) to structured group approaches (Delphi, nominal group techniques).
+
+Key points:
+- Problem solving vs. decision-making: decision-making may include evaluation and analysis of past decisions; different prescriptive steps and heuristics exist to improve quality.
+- Techniques: listing pros/cons, multi-criteria decision analysis, satisficing versus optimizing, and structured group protocols.
+- Development: children, adolescents and adults differ in decision processes; training and frameworks can improve decision outcomes for adolescents.
+
+This excerpt is adapted from the Wikipedia article "Decision-making" (text available under Creative Commons Attribution-ShareAlike 4.0 International).
+`
       }
     },
     {
@@ -1357,6 +1373,20 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
           'Increased irritability or mood swings'
         ],
         research: 'Meta-analyses demonstrate that cognitive-behavioral stress management techniques reduce anxiety and improve coping skills in adolescents (Ames et al., 2011).'
+      ,
+      fullArticle: `
+Coping — summary (from Wikipedia)
+
+Coping refers to the conscious or unconscious strategies individuals use to reduce or manage unpleasant emotions, thoughts, or situations. Coping strategies can be cognitive (reframing), behavioral (problem-focused action), emotion-focused (relaxation, seeking social support), or maladaptive (avoidance, substance use). The effectiveness of a coping strategy depends on the stressor, individual traits, and context; many people use a mix of strategies that change over time.
+
+Highlights:
+- Appraisal-focused coping: change how you think about a problem (reframing, humor).
+- Problem-focused coping: take direct action to address the stressor when possible.
+- Emotion-focused coping: manage emotional response using relaxation, mindfulness, or social support.
+- Social and health-focused frameworks emphasize distinguishing healthy from unhealthy coping and seeking professional support when warning signs appear.
+
+This excerpt is adapted from the Wikipedia article "Coping (psychology)" (text available under Creative Commons Attribution-ShareAlike 4.0 International).
+`
       }
     }
   ]
@@ -1374,7 +1404,7 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
             <span>Back to Topics</span>
           </button>
           
-          <article className="prose prose-lg max-w-none">
+          <article className="prose prose-lg max-w-none reveal-on-scroll">
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-gray-900 mb-2">{topic.title}</h1>
               <p className="text-gray-600">{topic.readTime}</p>
@@ -1446,7 +1476,7 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
             </div>
 
             {topic.content.fullArticle && (
-              <div className="mt-8 prose prose-lg max-w-none bg-white p-6 rounded-lg">
+              <div className="mt-8 prose prose-lg max-w-none bg-white p-6 rounded-lg reveal-on-scroll">
                 <div dangerouslySetInnerHTML={{ __html: topic.content.fullArticle.split('\n').join('<br/>') }} />
               </div>
             )}
@@ -1469,7 +1499,7 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
             <div 
               key={topic.id}
               onClick={() => setSelectedTopic(topic.id)}
-              className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-200 hover:border-blue-300"
+              className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-200 hover:border-blue-300 reveal-on-scroll"
             >
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-xl font-semibold text-gray-900">{topic.title}</h3>
@@ -1486,7 +1516,7 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
 
         
 
-        <div className="mt-12 bg-blue-50 p-6 rounded-lg">
+  <div className="mt-12 bg-blue-50 p-6 rounded-lg reveal-on-scroll">
           <h2 className="text-xl font-semibold text-blue-900 mb-3">Need Additional Support?</h2>
           <p className="text-blue-800 mb-4">
             If you're struggling with these topics or need someone to talk to, remember that seeking help is a sign of strength.
@@ -1503,7 +1533,7 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
 // Other components remain the same (AboutPage, HelpPage, Footer)
 function AboutPage() {
   return (
-    <div className="min-h-screen bg-white py-12">
+    <div className="min-h-screen bg-white py-12 page-enter">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">About SoberSteps</h1>
@@ -1548,7 +1578,7 @@ function AboutPage() {
 
 function HelpPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-12 page-enter">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Get Help & Support</h1>
@@ -1589,7 +1619,7 @@ function HelpPage() {
                 <p className="text-xs text-blue-700">Free, confidential, 24/7 treatment referral service</p>
               </div>
               <div className="bg-white p-3 rounded border border-blue-200">
-                <p className="font-semibold text-blue-900">National Suicide Prevention Lifeline</p>
+                <p className="font-semibold text-blue-900">Treatment Locator</p>
                 <p className="text-blue-800">findtreatment.samhsa.gov</p>
                 <p className="text-xs text-blue-700">Online treatment locator</p>
               </div>
@@ -1678,11 +1708,13 @@ function Footer() {
 // Main App Component
 function App() {
   const { userProgress, updateProgress } = useGameState()
-
+  // nothing here; ScrollRevealInit component is mounted inside App's JSX
   return (
     <Router>
       <div className="min-h-screen bg-white">
         <Header />
+        {/* Scroll reveal: add observer for elements with .reveal-on-scroll */}
+        <ScrollRevealInit />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/games" element={<GamesPage userProgress={userProgress} updateProgress={updateProgress} />} />
@@ -1694,6 +1726,46 @@ function App() {
       </div>
     </Router>
   )
+}
+
+// Small component to initialize IntersectionObserver for scroll reveals
+function ScrollRevealInit() {
+  useEffect(() => {
+    // Always run reveals and stagger them so on-load elements animate too.
+    const els = Array.from(document.querySelectorAll('.reveal-on-scroll'))
+
+    const obs = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = parseInt(entry.target.dataset.srIndex || 0, 10)
+          // staggered reveal for nicer presentation
+          setTimeout(() => {
+            entry.target.classList.add('is-visible')
+          }, 120 + idx * 80)
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.12 })
+
+    // Assign an index and either reveal immediately (with stagger) or observe
+    els.forEach((el, i) => {
+      el.dataset.srIndex = i
+      const rect = el.getBoundingClientRect()
+      const inView = rect.top < (window.innerHeight || document.documentElement.clientHeight) && rect.bottom >= 0
+      if (inView) {
+        // delay reveals so they animate on-first-load with a pleasant entrance
+        setTimeout(() => {
+          el.classList.add('is-visible')
+        }, 180 + i * 90)
+      } else {
+        obs.observe(el)
+      }
+    })
+
+    return () => obs.disconnect()
+  }, [])
+
+  return null
 }
 
 export default App

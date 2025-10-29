@@ -1,46 +1,4 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
+/* App.css */
 /* Page entrance perspective animation */
 .perspective-wrap {
   perspective: 1200px;
@@ -50,8 +8,8 @@
 .enter-perspective {
   transform-origin: center top;
   opacity: 0;
-  transform: translateY(18px) rotateX(12deg) scale(0.99);
-  animation: enter-perspective 700ms cubic-bezier(.2,.9,.2,1) forwards;
+  transform: translateY(22px) rotateX(12deg) scale(0.99);
+  animation: enter-perspective 800ms cubic-bezier(.2,.9,.2,1) forwards;
 }
 
 @keyframes enter-perspective {
@@ -60,3 +18,86 @@
     transform: translateY(0) rotateX(0) scale(1);
   }
 }
+
+/* Page fade-in entrance for all pages */
+.page-enter {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  animation: page-fade-in 700ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes page-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Staggered card entrance animations */
+.card-enter {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  animation: card-fade-in 600ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes card-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Stagger delays for multiple cards */
+.card-enter:nth-child(1) { animation-delay: 100ms; }
+.card-enter:nth-child(2) { animation-delay: 200ms; }
+.card-enter:nth-child(3) { animation-delay: 300ms; }
+.card-enter:nth-child(4) { animation-delay: 400ms; }
+.card-enter:nth-child(5) { animation-delay: 500ms; }
+.card-enter:nth-child(6) { animation-delay: 600ms; }
+
+/* Generic scroll reveal */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px) rotateX(6deg) scale(0.995);
+  will-change: opacity, transform;
+  transition: opacity 600ms cubic-bezier(.2,.9,.2,1), transform 600ms cubic-bezier(.2,.9,.2,1);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0) rotateX(0) scale(1);
+}
+
+/* Header entrance animation */
+.header-enter {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: header-slide-down 500ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes header-slide-down {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Content sections entrance */
+.section-enter {
+  opacity: 0;
+  transform: translateY(50px);
+  animation: section-fade-in 800ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes section-fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Specific delays for sections */
+.section-enter-1 { animation-delay: 100ms; }
+.section-enter-2 { animation-delay: 250ms; }
+.section-enter-3 { animation-delay: 400ms; }
+.section-enter-4 { animation-delay: 550ms; }
