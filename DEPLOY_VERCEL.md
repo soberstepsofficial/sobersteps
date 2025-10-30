@@ -1,7 +1,5 @@
 # How to Deploy the website to Vercel.
 
-This file contains a short, copy-paste friendly guide to deploy the SoberSteps site to Vercel.
-
 1) Fork & Connect the repository
    - Fork the github repository.
    - Go to https://vercel.com/
