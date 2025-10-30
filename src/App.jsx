@@ -1,7 +1,7 @@
 import React, { useState , useEffect } from 'react'
 import logo from './assets/sobersteps_logo_no_background.png'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
-import { Smile, CheckCircle, Users, Home, Gamepad2, BookOpen, Info, HelpCircle, Menu, X, Play, Award, Target, Heart, ArrowRight, RotateCcw, Star, TrendingUp } from 'lucide-react'
+import { Smile, CheckCircle, Users, Home, Gamepad2, BookOpen, Info, HelpCircle, Menu, X, Play, Award, Target, Heart, ArrowRight, RotateCcw, Star, TrendingUp, ExternalLink } from 'lucide-react'
 
 
 // Game State Management Hook
@@ -1403,196 +1403,56 @@ function HomePage() {
 }
 
 // Enhanced Learn Page with Research Citations
+// Enhanced Learn Page with Research Citations
 function LearnPage() {
-  const [selectedTopic, setSelectedTopic] = useState(null)
-
-  // (Featured article content moved into topic data below)
-
   const topics = [
     {
       id: 'peer-pressure',
       title: 'Understanding Peer Pressure',
-      summary: 'Learn about different types of peer pressure and evidence-based resistance strategies.',
+      summary: 'General psychology article on types of peer pressure and coping methods. Learn about different types of peer pressure and evidence-based resistance strategies.',
       readTime: '8 min read',
-      content: {
-        overview: 'Peer pressure is the influence exerted by peers to encourage someone to change their attitudes, values, or behaviors to conform to group norms.',
-        types: [
-          'Direct pressure: Explicit requests or demands to engage in specific behaviors',
-          'Indirect pressure: Subtle social cues and expectations within peer groups',
-          'Individual pressure: Internal desire to fit in or be accepted'
-        ],
-        strategies: [
-          'The "Broken Record" technique: Calmly repeat your position without elaboration',
-          'Suggest alternatives: Redirect the group toward different activities',
-          'Use confident body language: Stand tall, make eye contact, speak clearly',
-          'Find allies: Identify others who share your values'
-        ],
-        research: 'Studies show that resistance skills training can reduce substance use initiation by up to 40% (Botvin & Griffin, 2004).'
-  ,
-  fullArticle: `
-Understanding Peer Pressure
-
-Peer pressure is the influence peers may exert to encourage changes in attitudes or behavior to fit group norms. It can be direct (explicit requests), indirect (social expectations), or internal (desire to belong).
-
-Recognizing peer pressure starts with awareness: notice when a choice feels pushed, when language is coercive, or when consequences are minimized by others.
-
-Practical strategies:
-
-- Use a short, firm refusal ("No thanks, I'm not into that").
-- Offer an alternative activity to redirect the group.
-- Enlist an ally who supports your choice.
-- Practice role-playing to build confidence before real situations.
-
-Bottom line: Peer pressure can be navigated with preparation, assertive communication, and support. This article is released under CC-BY-4.0; you may reuse with attribution.
-  `
-      }
+      externalLink: 'https://www.verywellmind.com/what-is-peer-pressure-22246'
+    },
+    {
+      id: 'peer-pressure-positive',
+      title: 'Can Peer Pressure Help Teens Make Safer Decisions?',
+      summary: 'Explains research showing how positive peer influence can be protective. Exploring the positive side of peer influence and how it can support healthy choices.',
+      readTime: '6 min read',
+      externalLink: 'https://www.sciencejournalforkids.org/articles/can-peer-pressure-help-teens-make-safer-decisions/'
     },
     {
       id: 'decision-making',
-      title: 'Healthy Decision-Making Framework',
-      summary: 'A step-by-step approach to making decisions that align with your values and goals.',
+      title: 'Evidence-Based Decision-Making Framework',
+      summary: 'Scientific paper outlining structured decision-making frameworks. A step-by-step approach to making decisions that align with your values and goals.',
       readTime: '10 min read',
-      content: {
-        overview: 'Effective decision-making involves systematic evaluation of options, consequences, and personal values.',
-        framework: [
-          'STOP: Pause and recognize you have a choice to make',
-          'THINK: Consider your options and their potential consequences',
-          'EVALUATE: Weigh options against your personal values and goals',
-          'DECIDE: Make a choice and commit to following through',
-          'REFLECT: Learn from the outcomes of your decision'
-        ],
-        factors: [
-          'Short-term vs. long-term consequences',
-          'Impact on personal goals and relationships',
-          'Alignment with personal values and beliefs',
-          'Availability of support and resources'
-        ],
-        research: 'Research in developmental psychology shows that structured decision-making frameworks improve adolescent choice quality (Steinberg, 2013).'
-      }
+      externalLink: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8961960/'
     },
     {
-      id: 'stress-coping',
-      title: 'Healthy Stress Management',
-      summary: 'Evidence-based techniques for managing stress and difficult emotions without harmful substances.',
+      id: 'stress-management',
+      title: 'Stress Management Techniques',
+      summary: 'Medical overview of evidence-based stress management techniques. Learn healthy ways to manage stress and difficult emotions without harmful substances.',
       readTime: '12 min read',
-      content: {
-        overview: 'Stress is a normal part of life, but how we cope with it significantly impacts our wellbeing and decision-making.',
-        techniques: [
-          'Deep breathing exercises: Activate the parasympathetic nervous system',
-          'Progressive muscle relaxation: Systematically tension and release muscle groups',
-          'Mindfulness meditation: Focus attention on present moment experiences',
-          'Physical exercise: Release endorphins and reduce stress hormones',
-          'Social support: Connect with trusted friends, family, or counselors'
-        ],
-        warning_signs: [
-          'Persistent feelings of overwhelm or helplessness',
-          'Changes in sleep patterns or appetite',
-          'Withdrawal from activities or relationships',
-          'Increased irritability or mood swings'
-        ],
-        research: 'Meta-analyses demonstrate that cognitive-behavioral stress management techniques reduce anxiety and improve coping skills in adolescents (Ames et al., 2011).'
-      }
+      externalLink: 'https://www.ncbi.nlm.nih.gov/books/NBK513300/'
+    },
+    {
+      id: 'stress-reduction',
+      title: 'Top Ways to Reduce Daily Stress',
+      summary: 'Practical guidance on long-term stress reduction and resilience. Evidence-based techniques from Harvard Health for managing everyday stressors.',
+      readTime: '10 min read',
+      externalLink: 'https://www.health.harvard.edu/staying-healthy/top-ways-to-reduce-daily-stress'
+    },
+    {
+      id: 'who-guide',
+      title: 'WHO Guide for Evidence-Informed Decision-Making',
+      summary: 'Global framework for decision-making under uncertainty and pressure. Comprehensive guidance on making informed choices in challenging situations.',
+      readTime: '14 min read',
+      externalLink: 'https://www.who.int/publications/i/item/9789240039872'
     }
   ]
 
-  if (selectedTopic) {
-    const topic = topics.find(t => t.id === selectedTopic)
-    return (
-      <div className="min-h-screen bg-white py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => setSelectedTopic(null)}
-            className="mb-6 text-blue-600 hover:text-blue-700 flex items-center space-x-1"
-          >
-            <ArrowRight className="w-4 h-4 transform rotate-180" />
-            <span>Back to Topics</span>
-          </button>
-          
-          <article className="prose prose-lg max-w-none">
-            <div className="mb-8">
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">{topic.title}</h1>
-              <p className="text-gray-600">{topic.readTime}</p>
-            </div>
-            
-            <div className="bg-blue-50 p-6 rounded-lg mb-8">
-              <h2 className="text-xl font-semibold text-blue-900 mb-3">Overview</h2>
-              <p className="text-blue-800">{topic.content.overview}</p>
-            </div>
-
-            {topic.content.types && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Types of {topic.title.split(' ')[1]}</h2>
-                <ul className="space-y-2">
-                  {topic.content.types.map((type, index) => (
-                    <li key={index} className="text-gray-700">• {type}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {topic.content.strategies && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Effective Strategies</h2>
-                <ul className="space-y-3">
-                  {topic.content.strategies.map((strategy, index) => (
-                    <li key={index} className="text-gray-700">• {strategy}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {topic.content.framework && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Decision-Making Framework</h2>
-                <ol className="space-y-3">
-                  {topic.content.framework.map((step, index) => (
-                    <li key={index} className="text-gray-700">{index + 1}. {step}</li>
-                  ))}
-                </ol>
-              </div>
-            )}
-
-            {topic.content.techniques && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Healthy Coping Techniques</h2>
-                <ul className="space-y-3">
-                  {topic.content.techniques.map((technique, index) => (
-                    <li key={index} className="text-gray-700">• {technique}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {topic.content.warning_signs && (
-              <div className="mb-8 bg-yellow-50 p-6 rounded-lg">
-                <h2 className="text-xl font-semibold text-yellow-900 mb-4">When to Seek Additional Support</h2>
-                <ul className="space-y-2">
-                  {topic.content.warning_signs.map((sign, index) => (
-                    <li key={index} className="text-yellow-800">• {sign}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h2 className="text-lg font-semibold text-gray-900 mb-3">Research Foundation</h2>
-              <p className="text-gray-700 text-sm">{topic.content.research}</p>
-            </div>
-
-            {topic.content.fullArticle && (
-              <div className="mt-8 prose prose-lg max-w-none bg-white p-6 rounded-lg">
-                <div dangerouslySetInnerHTML={{ __html: topic.content.fullArticle.split('\n').join('<br/>') }} />
-              </div>
-            )}
-          </article>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="min-h-screen bg-white py-12">
-  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 enter-perspective">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Evidence-Based Learning Resources</h1>
           <p className="text-xl text-gray-600">Research-backed information to support healthy decision-making</p>
@@ -1602,37 +1462,43 @@ Bottom line: Peer pressure can be navigated with preparation, assertive communic
           {topics.map((topic) => (
             <div 
               key={topic.id}
-              onClick={() => setSelectedTopic(topic.id)}
-              className="bg-gray-50 rounded-lg p-6 hover:bg-gray-100 transition-colors cursor-pointer border border-gray-200 hover:border-blue-300"
+              className="bg-gray-50 rounded-lg p-6 border border-gray-200 hover:border-blue-300 transition-colors"
             >
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-xl font-semibold text-gray-900">{topic.title}</h3>
                 <span className="text-sm text-gray-500">{topic.readTime}</span>
               </div>
-              <p className="text-gray-600 mb-3">{topic.summary}</p>
-              <div className="flex items-center text-blue-600 hover:text-blue-700">
-                <span className="text-sm font-medium">Read Article</span>
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </div>
+              <p className="text-gray-600 mb-4">{topic.summary}</p>
+              <a 
+                href={topic.externalLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+              >
+                <span className="text-sm">Read Full Article</span>
+                <ExternalLink className="w-4 h-4 ml-1" />
+              </a>
             </div>
           ))}
         </div>
-
-        
 
         <div className="mt-12 bg-blue-50 p-6 rounded-lg">
           <h2 className="text-xl font-semibold text-blue-900 mb-3">Need Additional Support?</h2>
           <p className="text-blue-800 mb-4">
             If you're struggling with these topics or need someone to talk to, remember that seeking help is a sign of strength.
           </p>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+          <a 
+            href="/help"
+            className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
             Find Support Resources
-          </button>
+          </a>
         </div>
       </div>
     </div>
   )
 }
+
 
 // Other components remain the same (AboutPage, HelpPage, Footer)
 function AboutPage() {
