@@ -1724,15 +1724,17 @@ function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white flex flex-col">
         <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/games" element={<GamesPage userProgress={userProgress} updateProgress={updateProgress} />} />
-          <Route path="/learn" element={<LearnPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/help" element={<HelpPage />} />
-        </Routes>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/games" element={<GamesPage userProgress={userProgress} updateProgress={updateProgress} />} />
+            <Route path="/learn" element={<LearnPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/help" element={<HelpPage />} />
+          </Routes>
+        </main>
         <Footer />
       </div>
     </Router>
