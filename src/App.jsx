@@ -1,4 +1,5 @@
 import React, { useState , useEffect } from 'react'
+import logo from './assets/sobersteps_logo_no_background.png'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
 import { Smile, CheckCircle, Users, Home, Gamepad2, BookOpen, Info, HelpCircle, Menu, X, Play, Award, Target, Heart, ArrowRight, RotateCcw, Star, TrendingUp } from 'lucide-react'
 
@@ -32,80 +33,114 @@ function DecisionGame({ onComplete }) {
   const [selectedChoice, setSelectedChoice] = useState(null)
   const [showFeedback, setShowFeedback] = useState(false)
 
-  const scenarios = [
-    {
-      id: 1,
-      situation: "You're at a party and someone offers you a drink that you suspect contains alcohol. Your friends are watching.",
-      choices: [
-        { 
-          text: "Take the drink to fit in", 
-          points: 0, 
-          feedback: "While peer acceptance feels important, compromising your values can lead to bigger problems. Consider the long-term consequences.",
-          consequence: "You feel uncomfortable and worried about the effects."
-        },
-        { 
-          text: "Politely decline and suggest an alternative", 
-          points: 10, 
-          feedback: "Excellent choice! Suggesting alternatives shows leadership and helps others make better decisions too.",
-          consequence: "Your friends respect your decision and some join you in choosing non-alcoholic options."
-        },
-        { 
-          text: "Leave the party immediately", 
-          points: 7, 
-          feedback: "Removing yourself from the situation is valid, though finding ways to navigate these situations can be empowering.",
-          consequence: "You avoid the immediate pressure but wonder how to handle similar situations in the future."
-        }
-      ]
-    },
-    {
-      id: 2,
-      situation: "A friend seems stressed about school and mentions they've been thinking about trying substances to cope. They ask for your advice.",
-      choices: [
-        { 
-          text: "Suggest they should try it if it helps", 
-          points: 0, 
-          feedback: "Supporting harmful coping mechanisms can escalate problems. Friends need guidance toward healthy solutions.",
-          consequence: "Your friend tries substances and their problems get worse, affecting their grades and relationships."
-        },
-        { 
-          text: "Listen and suggest talking to a counselor or trusted adult", 
-          points: 10, 
-          feedback: "Perfect response! Showing empathy while directing them to professional help is exactly what good friends do.",
-          consequence: "Your friend feels heard and gets the professional support they need to develop healthy coping strategies."
-        },
-        { 
-          text: "Change the subject to avoid the conversation", 
-          points: 2, 
-          feedback: "While avoiding difficult topics is natural, friends in crisis need support and guidance.",
-          consequence: "Your friend feels alone with their problems and may make poor decisions without guidance."
-        }
-      ]
-    },
-    {
-      id: 3,
-      situation: "You see posts on social media showing classmates using substances and seeming to have fun. You're feeling left out.",
-      choices: [
-        { 
-          text: "Ask to join them next time", 
-          points: 0, 
-          feedback: "Social media often shows only highlights, not consequences. Real connections come from shared interests and values.",
-          consequence: "You realize the 'fun' was temporary, but the risks and consequences are real and lasting."
-        },
-        { 
-          text: "Focus on activities and friends that align with your values", 
-          points: 10, 
-          feedback: "Excellent insight! Authentic friendships are built on mutual respect and shared healthy interests.",
-          consequence: "You develop deeper, more meaningful relationships and discover activities you truly enjoy."
-        },
-        { 
-          text: "Feel bad about yourself and withdraw", 
-          points: 3, 
-          feedback: "It's normal to feel left out sometimes, but isolation isn't the answer. Seek positive connections instead.",
-          consequence: "Withdrawing makes you feel worse. Consider reaching out to counselors or finding positive social groups."
-        }
-      ]
-    }
-  ]
+const scenarios = [
+  {
+    id: 1,
+    situation: "You're at a party and someone offers you a drink that you suspect contains alcohol. Your friends are watching.",
+    choices: [
+      { 
+        text: "Take the drink to fit in", 
+        points: 0, 
+        feedback: "It might seem easier to go along, but that can lead to bigger regrets later. Real friends don’t need you to prove anything.",
+        consequence: "You feel uneasy after and realize it wasn’t worth it."
+      },
+      { 
+        text: "Politely decline and grab a soda instead", 
+        points: 10, 
+        feedback: "Nice call — staying calm and confident makes your boundaries clear.",
+        consequence: "Your friends respect your choice and some even follow your lead."
+      },
+      { 
+        text: "Walk away without saying anything", 
+        points: 5, 
+        feedback: "That avoids the moment, but standing up for yourself helps more long term.",
+        consequence: "You leave but still feel unsure about how to handle it next time."
+      }
+    ]
+  },
+  {
+    id: 2,
+    situation: "A friend seems stressed about school and mentions they’ve been thinking about trying substances to cope. They ask for your advice.",
+    choices: [
+      { text: "Tell them to do what makes them feel better", points: 0, feedback: "That might sound supportive, but it can cause serious harm. Your friend needs real help.", consequence: "Their stress worsens and you feel guilty for not saying more." },
+      { text: "Suggest they talk to a counselor or coach", points: 10, feedback: "You nailed it — guiding them to support shows real friendship.", consequence: "They open up to an adult and start feeling better." },
+      { text: "Change the topic to avoid the awkwardness", points: 2, feedback: "Avoiding it might feel easier, but silence can make them feel alone.", consequence: "They don’t bring it up again and you worry later." }
+    ]
+  },
+  {
+    id: 3,
+    situation: "You see posts on social media of classmates using substances and looking like they’re having a great time.",
+    choices: [
+      { text: "Ask if you can join next time", points: 0, feedback: "Social media doesn’t show the downsides — it’s a highlight reel.", consequence: "You realize the fun was fake when things go wrong for them later." },
+      { text: "Focus on friends who share your values", points: 10, feedback: "Exactly! Finding your kind of people pays off.", consequence: "You feel happier and more confident in your own choices." },
+      { text: "Scroll away but feel bad about yourself", points: 3, feedback: "Everyone feels left out sometimes — reach out to friends who lift you up.", consequence: "You stay stuck comparing yourself to others online." }
+    ]
+  },
+  {
+    id: 4,
+    situation: "Your teammate asks you to skip practice to hang out, even though your coach warned that missing another session means you’ll be benched.",
+    choices: [
+      { text: "Skip practice, you’ll deal with the consequences later", points: 0, feedback: "Quick fun can cost you trust and opportunities.", consequence: "You get benched for a week and regret giving in." },
+      { text: "Explain that you’ve made a commitment to your team", points: 10, feedback: "Solid! Keeping your word shows discipline and leadership.", consequence: "Your friend respects your decision — eventually." },
+      { text: "Pretend to be sick so you can hang out", points: 4, feedback: "Dishonesty might help short term, but it’ll bite you later.", consequence: "You feel anxious when your coach asks for a doctor’s note." }
+    ]
+  },
+  {
+    id: 5,
+    situation: "Someone in your class asks to copy your test answers because they ‘really need to pass.’",
+    choices: [
+      { text: "Let them — you’re just helping a friend", points: 0, feedback: "Cheating helps no one. It risks both your grades and integrity.", consequence: "You both get caught and lose your teacher’s trust." },
+      { text: "Say no and offer to study together next time", points: 10, feedback: "That’s real support — you helped without risking your integrity.", consequence: "They agree to study and thank you later." },
+      { text: "Ignore them and hope the teacher doesn’t see", points: 3, feedback: "Avoiding the issue might save the moment, but it doesn’t help long term.", consequence: "You feel guilty for not standing up for what’s right." }
+    ]
+  },
+  {
+    id: 6,
+    situation: "A friend offers you a vape in the school parking lot, saying ‘it’s just fruit flavor, not a big deal.’",
+    choices: [
+      { text: "Try it once — it can’t hurt", points: 0, feedback: "Even one hit can start a habit. Your lungs will thank you for skipping it.", consequence: "You cough hard and regret giving in." },
+      { text: "Say no thanks and change the subject", points: 10, feedback: "Perfect! Calm confidence works best.", consequence: "They drop it and you move on with no stress." },
+      { text: "Laugh it off but take it anyway", points: 2, feedback: "Joking doesn’t erase the risk — your health isn’t a punchline.", consequence: "You feel pressure to keep doing it next time too." }
+    ]
+  },
+  {
+    id: 7,
+    situation: "A group dares you to post an embarrassing video for laughs, promising it’ll ‘go viral.’",
+    choices: [
+      { text: "Do it — it’s harmless fun", points: 0, feedback: "Once it’s online, you can’t take it back. Viral regret is real.", consequence: "You get unwanted attention and wish you hadn’t posted it." },
+      { text: "Refuse and make a joke to change the subject", points: 10, feedback: "Great move — humor can defuse pressure fast.", consequence: "They laugh it off and move on, no harm done." },
+      { text: "Walk away annoyed", points: 5, feedback: "That works too, though staying calm could help you keep control.", consequence: "You avoid trouble but feel left out." }
+    ]
+  },
+  {
+    id: 8,
+    situation: "A friend says they can sneak you into a concert without paying — everyone’s doing it.",
+    choices: [
+      { text: "Go along — it’s just one time", points: 0, feedback: "Small risks can lead to big consequences. It’s not worth it.", consequence: "You get caught at the gate and feel embarrassed." },
+      { text: "Offer to help buy tickets instead", points: 10, feedback: "Smart! You found a win-win solution that avoids risk.", consequence: "You both enjoy the show the right way." },
+      { text: "Say no and make up an excuse", points: 5, feedback: "That works, but honesty can build more respect.", consequence: "They tease you a bit, but you feel better later." }
+    ]
+  },
+  {
+    id: 9,
+    situation: "You’re at a small party where people start drinking from an unmarked bottle. Someone passes it to you.",
+    choices: [
+      { text: "Take a small sip so no one judges you", points: 0, feedback: "Safety first — you never know what’s really in it.", consequence: "You feel dizzy and worried afterward." },
+      { text: "Say no thanks and grab some water", points: 10, feedback: "Nice! You stayed confident and safe.", consequence: "Someone else follows your lead and skips it too." },
+      { text: "Pretend to drink it and put it down", points: 7, feedback: "That’s clever in the moment, though honesty is stronger long term.", consequence: "You avoid risk but feel nervous someone might notice." }
+    ]
+  },
+  {
+    id: 10,
+    situation: "You’re feeling stressed about grades and a friend says, ‘just take one of my study pills — it’ll help you focus.’",
+    choices: [
+      { text: "Take one, it’s not like it’s illegal", points: 0, feedback: "Prescription meds can be dangerous if they’re not yours.", consequence: "You feel jittery and regret it later." },
+      { text: "Say no thanks, you’ll handle it your own way", points: 10, feedback: "That’s maturity — your health comes first.", consequence: "You push through and feel proud of yourself later." },
+      { text: "Say maybe next time to avoid arguing", points: 3, feedback: "Avoiding conflict helps short term, but firm boundaries matter.", consequence: "They bring it up again later expecting you’ll say yes." }
+    ]
+  }
+]
+
 
   const handleChoice = (choiceIndex) => {
     setSelectedChoice(choiceIndex)
@@ -234,8 +269,9 @@ function PeerPressureGame({ onComplete }) {
   const [score, setScore] = useState(0)
   const [gameComplete, setGameComplete] = useState(false)
   const [responses, setResponses] = useState([])
+  const [isProcessing, setIsProcessing] = useState(false)
 
-  const pressureScenarios = [
+const pressureScenarios = [
     {
       pressure: "Come on, everyone's doing it. Don't be such a baby.",
       effectiveResponses: [
@@ -277,10 +313,98 @@ function PeerPressureGame({ onComplete }) {
         "Maybe I should be more open-minded."
       ],
       tip: "You don't have to experience everything to make informed decisions. Trust your judgment."
+    },
+    {
+      pressure: "We won't tell anyone. It'll just be between us.",
+      effectiveResponses: [
+        "It's not about who knows, it's about what's right for me.",
+        "I'm not interested, but thanks anyway.",
+        "Nah, I'm all set."
+      ],
+      ineffectiveResponses: [
+        "Well, if no one will find out...",
+        "I guess it would be okay if it's just us.",
+        "Okay, but you have to promise not to tell."
+      ],
+      tip: "Privacy doesn't change what's healthy or safe for you. Make decisions based on your values, not secrecy."
+    },
+    {
+      pressure: "I thought we were friends. Friends do this stuff together.",
+      effectiveResponses: [
+        "Real friends respect my boundaries.",
+        "Being friends doesn't mean we have to do everything together.",
+        "I value our friendship, but this isn't for me."
+      ],
+      ineffectiveResponses: [
+        "I don't want to lose you as a friend...",
+        "Maybe I should just go along with it.",
+        "Fine, if that's what friends do."
+      ],
+      tip: "Friendship shouldn't be conditional. True friends respect your choices without manipulation."
+    },
+    {
+      pressure: "You're being so uptight. Just relax and try it once.",
+      effectiveResponses: [
+        "I'm perfectly relaxed as I am.",
+        "This is me relaxed—I don't need that.",
+        "I relax in my own way."
+      ],
+      ineffectiveResponses: [
+        "Maybe I am being too uptight...",
+        "I guess one time won't hurt.",
+        "You think I need to loosen up?"
+      ],
+      tip: "Saying no doesn't mean you're uptight—it means you're making a choice. Stay calm and confident."
+    },
+    {
+      pressure: "Don't you trust me? I wouldn't let anything bad happen to you.",
+      effectiveResponses: [
+        "Trust isn't the issue—I just don't want to.",
+        "I trust you, but I still make my own choices.",
+        "I appreciate that, but my answer is still no."
+      ],
+      ineffectiveResponses: [
+        "I do trust you... maybe it's okay.",
+        "I don't want you to think I don't trust you.",
+        "Okay, I trust you."
+      ],
+      tip: "Trust is important, but it doesn't override your personal boundaries. You can trust someone and still say no."
+    },
+    {
+      pressure: "It's not even a big deal. Why are you making such a fuss?",
+      effectiveResponses: [
+        "It's a big deal to me, and that's what matters.",
+        "I'm not making a fuss—I'm just saying no.",
+        "Whether it's a big deal or not, I'm not interested."
+      ],
+      ineffectiveResponses: [
+        "Maybe I am overreacting...",
+        "I don't want to seem dramatic.",
+        "Okay, fine, I'll stop making it a big deal."
+      ],
+      tip: "You get to decide what's important to you. Don't let others minimize your concerns."
+    },
+    {
+      pressure: "After all I've done for you, you can't do this one thing for me?",
+      effectiveResponses: [
+        "I appreciate what you've done, but that doesn't change my decision.",
+        "This isn't something I can do, even as a favor.",
+        "I value what you do for me, but this crosses a line for me."
+      ],
+      ineffectiveResponses: [
+        "You're right, I do owe you...",
+        "I feel bad now... maybe I should.",
+        "Okay, since you put it that way."
+      ],
+      tip: "Guilt trips are manipulation. Healthy relationships don't keep score or trade favors for compromising your values."
     }
   ]
 
-  const handleResponse = (responseIndex, isEffective) => {
+const handleResponse = (responseIndex, isEffective) => {
+    if (isProcessing) return // Prevent multiple clicks
+    
+    setIsProcessing(true)
+    
     const newResponse = {
       level: currentLevel,
       response: isEffective ? pressureScenarios[currentLevel].effectiveResponses[responseIndex] : pressureScenarios[currentLevel].ineffectiveResponses[responseIndex],
@@ -288,26 +412,32 @@ function PeerPressureGame({ onComplete }) {
       points: isEffective ? 10 : 2
     }
     
-    setResponses([...responses, newResponse])
-    setScore(prev => prev + newResponse.points)
+    const newResponses = [...responses, newResponse]
+    const newScore = score + newResponse.points
+    
+    setResponses(newResponses)
+    setScore(newScore)
 
     if (currentLevel < pressureScenarios.length - 1) {
       setTimeout(() => {
         setCurrentLevel(prev => prev + 1)
+        setIsProcessing(false)
       }, 2000)
     } else {
       setTimeout(() => {
         setGameComplete(true)
-        onComplete('peer-pressure', score + newResponse.points)
+        setIsProcessing(false)
+        onComplete('peer-pressure', newScore)
       }, 2000)
     }
   }
 
-  const resetGame = () => {
+const resetGame = () => {
     setCurrentLevel(0)
     setScore(0)
     setGameComplete(false)
     setResponses([])
+    setIsProcessing(false)
   }
 
   if (gameComplete) {
@@ -380,7 +510,7 @@ function PeerPressureGame({ onComplete }) {
         <p className="text-gray-600 text-sm mb-4">Choose the most effective response:</p>
       </div>
 
-      <div className="space-y-3 mb-4">
+<div className="space-y-3 mb-4">
         {allResponses.map((response, index) => {
           const isEffective = currentScenario.effectiveResponses.includes(response)
           const effectiveIndex = currentScenario.effectiveResponses.indexOf(response)
@@ -393,7 +523,12 @@ function PeerPressureGame({ onComplete }) {
                 isEffective ? effectiveIndex : ineffectiveIndex, 
                 isEffective
               )}
-              className="w-full text-left p-4 border-2 border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors"
+              disabled={isProcessing}
+              className={`w-full text-left p-4 border-2 border-gray-200 rounded-lg transition-colors ${
+                isProcessing 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : 'hover:border-purple-300 hover:bg-purple-50'
+              }`}
             >
               "{response}"
             </button>
@@ -961,10 +1096,9 @@ function Header() {
     <header className="bg-white shadow-lg sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center h-16">
-          <Link to="/" className="flex-shrink-0">
-            <span className="text-2xl font-bold text-gray-900">
-              SoberSteps
-            </span>
+          <Link to="/" className="flex-shrink-0 flex items-center">
+            <img src={logo} alt="SoberSteps logo" className="w-10 h-10 mr-3" />
+            <span className="text-2xl font-bold text-gray-900">SoberSteps</span>
           </Link>
 
           <div className="hidden md:flex items-center space-x-8 ml-8">
