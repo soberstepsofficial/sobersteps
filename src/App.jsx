@@ -563,7 +563,6 @@ function WellnessTracker({ onComplete }) {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedMetric, setSelectedMetric] = useState('mood')
 
-  const moodEmojis = ['😢', '😟', '😕', '😐', '🙂', '😊', '😄', '😁', '🤩', '🥳']
   const categories = [
     { key: 'mood', label: 'Mood', icon: '😊', color: 'yellow', gradient: 'from-yellow-300 to-yellow-500', max: 10 },
     { key: 'sleep', label: 'Sleep Hours', icon: '😴', color: 'blue', gradient: 'from-blue-300 to-blue-500', max: 12 },
@@ -590,7 +589,7 @@ function WellnessTracker({ onComplete }) {
     return emptyWeek
   }
 
-// data loader (on mount)  
+  // data loader (on mount)  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -910,7 +909,7 @@ function WellnessTracker({ onComplete }) {
         </div>
       </div>
 
-      {/* sliders */}
+      {/* sliders - MOOD NOW SHOWS NUMBERS */}
       <div className="space-y-6 mb-6">
         {categories.map(cat => {
           const trend = getTrend(cat.key)
@@ -932,7 +931,7 @@ function WellnessTracker({ onComplete }) {
                   {trend === 'down' && <TrendingUp className="w-5 h-5 text-red-600 transform rotate-180" />}
                   <div className="text-right">
                     <div className="text-3xl font-bold text-gray-900">
-                      {cat.key === 'mood' ? moodEmojis[wellnessData[cat.key] - 1] : wellnessData[cat.key]}
+                      {wellnessData[cat.key]}
                     </div>
                     <div className="text-xs text-gray-500">/{cat.max}</div>
                   </div>
