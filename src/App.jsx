@@ -1491,33 +1491,98 @@ function AboutPage() {
         
         <div className="prose prose-lg mx-auto">
           <p className="text-gray-700 mb-6">
-            SoberSteps combines educational research, prevention science, and interactive technology 
-            to help young people develop critical life skills and make informed decisions about their health and wellbeing.
+            SoberSteps, through educational research, prevention science, and interactive games,
+            helps young people develop critical life skills to use later on, while at the same time learning about how informed decisions benefit
+            health and wellbeing.
           </p>
           
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Our Evidence-Based Approach</h2>
           <p className="text-gray-700 mb-6">
-            Our content is grounded in peer-reviewed research from fields including developmental psychology, 
-            prevention science, and educational technology. We partner with researchers and educators to ensure 
-            our games and resources reflect current best practices in prevention education.
+            Through peer-reviewed research from numerous fields such as developmental psychology, prevention science, and educational technology, our 
+            goal is to ensure that our visitors use our games and resources in order to understand and apply the best practices in prevention education.
           </p>
           
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Key Research Foundations</h2>
           <ul className="text-gray-700 space-y-2 mb-6">
-            <li>• Social Learning Theory (Bandura, 1977)</li>
+            <li>• Social Learning Theory</li>
             <li>• Cognitive-Behavioral Prevention Models</li>
-            <li>• Experiential Learning Theory (Kolb, 1984)</li>
-            <li>• Self-Determination Theory (Deci & Ryan, 1985)</li>
+            <li>• Experiential Learning Theory</li>
+            <li>• Self-Determination Theory</li>
             <li>• Risk and Protective Factors Framework</li>
           </ul>
 
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Platform Features</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Features</h2>
           <ul className="text-gray-700 space-y-2 mb-6">
-            <li>• Interactive scenario-based learning with immediate feedback</li>
-            <li>• Skills practice through gamified experiences</li>
-            <li>• Progress tracking and achievement systems</li>
-            <li>• Age-appropriate content based on developmental research</li>
-            <li>• Integration with crisis support resources</li>
+            <li>• Interactive learning through scenarios with immediate feedback.</li>
+            <li>• Practice of skills through games.</li>
+            <li>• Progress tracking and achievement systems.</li>
+            <li>• Content that is age approprite and is based on extensive research.</li>
+            <li>• Integration of crisis support resources.</li>
+          </ul>
+
+
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Credits</h2>
+          <ul className="text-gray-700 space-y-2 mb-6">
+            <li>
+              • <a
+                href="https://www.verywellmind.com/what-is-peer-pressure-22246"
+                className="text-blue-600 hover:text-blue-700 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Verywell Mind – What to Know About Peer Pressure
+              </a>
+            </li>
+            <li>
+              • <a
+                href="https://pmc.ncbi.nlm.nih.gov/articles/PMC8961960/"
+                className="text-blue-600 hover:text-blue-700 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                PubMed Central – Framework of Evidence-Based Decision-Making
+              </a>
+            </li>
+            <li>
+              • <a
+                href="https://www.ncbi.nlm.nih.gov/books/NBK513300/"
+                className="text-blue-600 hover:text-blue-700 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                NCBI / StatPearls – Stress Management
+              </a>
+            </li>
+            <li>
+              • <a
+                href="https://www.sciencejournalforkids.org/articles/can-peer-pressure-help-teens-make-safer-decisions/"
+                className="text-blue-600 hover:text-blue-700 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Science Journal for Kids – Can Peer Pressure Help Teens Make Safer Decisions?
+              </a>
+            </li>
+            <li>
+              • <a
+                href="https://www.who.int/publications/i/item/9789240039872"
+                className="text-blue-600 hover:text-blue-700 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                World Health Organization – Guide for Evidence-Informed Decision-Making
+              </a>
+            </li>
+            <li>
+              • <a
+                href="https://www.health.harvard.edu/staying-healthy/top-ways-to-reduce-daily-stress"
+                className="text-blue-600 hover:text-blue-700 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Harvard Health Publishing – Top Ways to Reduce Daily Stress
+              </a>
+            </li>
           </ul>
         </div>
       </div>
