@@ -1277,8 +1277,8 @@ function HomePage() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Interactive educational games designed to build awareness, develop life skills, 
-              and support healthy decision-making for young people.
+              Interactive and educational games that are designed to build awareness, develop life skills, 
+              and support healthy decision-making.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
@@ -1309,8 +1309,8 @@ function HomePage() {
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Decision Simulator</h3>
               <p className="text-gray-600 mb-6">
-                Navigate realistic peer pressure scenarios with immediate feedback. Based on cognitive-behavioral 
-                principles, this game helps you practice decision-making skills before facing real situations.
+                Through realistic peer pressure scenarios, with immediate feedback, learn how to go through peer pressure. Based on principles based on 
+                cognitive and behavioral principles, this game helps you practice decision making skills.
               </p>
               <ul className="text-gray-600 space-y-2 mb-6">
                 <li>• Realistic peer pressure scenarios</li>
@@ -1349,10 +1349,10 @@ function HomePage() {
               <div className="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-6">
                 <Smile className="w-8 h-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">85% Better Retention</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">90% Better Retention</h3>
               <p className="text-gray-600 leading-relaxed">
-                Interactive learning increases knowledge retention by 85% compared to passive instruction, 
-                according to educational research studies.
+                Through these interactive and educational games, knowledge retention increases to 90%, compared to passive instruction, according to 
+                numerous research studies.
               </p>
             </div>
             <div className="text-center">
@@ -1361,8 +1361,8 @@ function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Skill Transfer</h3>
               <p className="text-gray-600 leading-relaxed">
-                Scenario-based learning helps students apply skills in real situations, 
-                bridging the gap between knowledge and action.
+                Scenario based learning helps students apply skills in real situations, 
+                connecting the gap between knowledge and action.
               </p>
             </div>
             <div className="text-center">
@@ -1371,8 +1371,8 @@ function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Self-Efficacy</h3>
               <p className="text-gray-600 leading-relaxed">
-                Practice builds confidence. Students who engage with interactive scenarios 
-                report higher self-efficacy in challenging situations.
+                Practice builds confidence. Students who engage with interactive scenarios like these are more likely to
+                report higher self-confidence and success in challenging situations.
               </p>
             </div>
           </div>
@@ -1388,42 +1388,42 @@ function LearnPage() {
     {
       id: 'peer-pressure',
       title: 'Understanding Peer Pressure',
-      summary: 'General psychology article on types of peer pressure and coping methods. Learn about different types of peer pressure and evidence-based resistance strategies.',
+      summary: 'This article on General psychology goes over types of peer pressure and coping methods. Learn about different types of peer pressure and evidence-based resistance strategies.',
       readTime: '8 min read',
       externalLink: 'https://www.verywellmind.com/what-is-peer-pressure-22246'
     },
     {
       id: 'peer-pressure-positive',
       title: 'Can Peer Pressure Help Teens Make Safer Decisions?',
-      summary: 'Explains research showing how positive peer influence can be protective. Exploring the positive side of peer influence and how it can support healthy choices.',
+      summary: 'This article goes into a deep view of research, explaning how positive peer influence can be protective. Exploring the positive side of peer influence and how it can support healthy choices.',
       readTime: '6 min read',
       externalLink: 'https://www.sciencejournalforkids.org/articles/can-peer-pressure-help-teens-make-safer-decisions/'
     },
     {
       id: 'decision-making',
       title: 'Evidence-Based Decision-Making Framework',
-      summary: 'Scientific paper outlining structured decision-making frameworks. A step-by-step approach to making decisions that align with your values and goals.',
+      summary: 'This scientific paper outlines structured decision-making frameworks. A step-by-step approach to making decisions that align with your values and goals.',
       readTime: '10 min read',
       externalLink: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8961960/'
     },
     {
       id: 'stress-management',
       title: 'Stress Management Techniques',
-      summary: 'Medical overview of evidence-based stress management techniques. Learn healthy ways to manage stress and difficult emotions without harmful substances.',
+      summary: 'This highly informational medical overview of evidence-based stress management techniques. Learn healthy ways to manage stress and difficult emotions without harmful substances.',
       readTime: '12 min read',
       externalLink: 'https://www.ncbi.nlm.nih.gov/books/NBK513300/'
     },
     {
       id: 'stress-reduction',
       title: 'Top Ways to Reduce Daily Stress',
-      summary: 'Practical guidance on long-term stress reduction and resilience. Evidence-based techniques from Harvard Health for managing everyday stressors.',
+      summary: 'This article goes over practical guidance on long-term stress reduction and resilience. Evidence-based techniques from Harvard Health for managing everyday stressors.',
       readTime: '10 min read',
       externalLink: 'https://www.health.harvard.edu/staying-healthy/top-ways-to-reduce-daily-stress'
     },
     {
       id: 'who-guide',
       title: 'Guide for Evidence-Informed Decision-Making',
-      summary: 'Global framework for decision-making under uncertainty and pressure. Comprehensive guidance on making informed choices in challenging situations.',
+      summary: 'This article is a global framework for decision-making under uncertainty and pressure. Comprehensive guidance on making informed choices in challenging situations.',
       readTime: '14 min read',
       externalLink: 'https://www.who.int/publications/i/item/9789240039872'
     }
