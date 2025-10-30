@@ -1465,12 +1465,12 @@ function LearnPage() {
           <p className="text-blue-800 mb-4">
             If you're struggling with these topics or need someone to talk to, remember that seeking help is a sign of strength.
           </p>
-          <a 
-            href="/help"
+          <Link 
+            to="/help"
             className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             Find Support Resources
-          </a>
+          </Link>
         </div>
       </div>
     </div>
