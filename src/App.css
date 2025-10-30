@@ -41,7 +41,6 @@
   color: #888;
 }
 
-/* Page entrance perspective animation */
 .perspective-wrap {
   perspective: 1200px;
   -webkit-perspective: 1200px;
