@@ -3,8 +3,7 @@ import logo from './assets/sobersteps_logo_no_background.png'
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'
 import { Smile, CheckCircle, Users, Home, Gamepad2, BookOpen, Info, HelpCircle, Menu, X, Play, Award, Target, Heart, ArrowRight, RotateCcw, Star, TrendingUp, ExternalLink } from 'lucide-react'
 
-
-// Game State Management Hook
+//score, games completed, achievements, and currentstreak tracking
 function useGameState() {
   const [userProgress, setUserProgress] = useState({
     gamesCompleted: 0,
@@ -25,7 +24,7 @@ function useGameState() {
   return { userProgress, updateProgress }
 }
 
-// Interactive Decision Game Component
+// Decision Game components 
 function DecisionGame({ onComplete }) {
   const [currentScenario, setCurrentScenario] = useState(0)
   const [score, setScore] = useState(0)
@@ -263,7 +262,7 @@ const scenarios = [
   )
 }
 
-// Peer Pressure Resistance Game
+// Peer Pressure Game components
 function PeerPressureGame({ onComplete }) {
   const [currentLevel, setCurrentLevel] = useState(0)
   const [score, setScore] = useState(0)
@@ -401,7 +400,7 @@ const pressureScenarios = [
   ]
 
 const handleResponse = (responseIndex, isEffective) => {
-    if (isProcessing) return // Prevent multiple clicks
+    if (isProcessing) return
     
     setIsProcessing(true)
     
@@ -545,9 +544,7 @@ const resetGame = () => {
   )
 }
 
-// Wellness Tracker Game Component
-// Replace the WellnessTracker component with this enhanced version:
-
+// Wellness Tracker Game components
 function WellnessTracker({ onComplete }) {
   const [currentDate] = useState(new Date().toISOString().split('T')[0])
   const [wellnessData, setWellnessData] = useState({
@@ -575,7 +572,6 @@ function WellnessTracker({ onComplete }) {
     { key: 'social', label: 'Social Connection', icon: '👥', color: 'purple', gradient: 'from-purple-300 to-purple-500', max: 10 }
   ]
 
-  // Initialize empty week structure
   const initializeEmptyWeek = () => {
     const emptyWeek = []
     for (let i = 6; i >= 0; i--) {
@@ -594,7 +590,7 @@ function WellnessTracker({ onComplete }) {
     return emptyWeek
   }
 
-  // Load data on mount
+// data loader (on mount)  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -720,8 +716,6 @@ function WellnessTracker({ onComplete }) {
     return 'neutral'
   }
 
-  // getColorForValue removed (unused) to avoid lint warnings
-
   if (isLoading) {
     return (
       <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -813,11 +807,9 @@ function WellnessTracker({ onComplete }) {
         )}
       </div>
 
-      {/* Enhanced Week Overview Chart */}
       <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 p-6 rounded-xl mb-6 shadow-inner">
         <h3 className="font-semibold text-gray-900 mb-4">7-Day Wellness Trends</h3>
         
-        {/* Metric Selector */}
         <div className="flex space-x-2 mb-4 overflow-x-auto pb-2">
           {categories.map(cat => (
             <button
@@ -836,7 +828,6 @@ function WellnessTracker({ onComplete }) {
           ))}
         </div>
 
-        {/* Line Chart Style Visualization */}
         <div className="bg-white rounded-lg p-4 relative">
           <div className="flex items-end justify-between h-48 space-x-2">
             {weekData.map((day, index) => {
@@ -848,14 +839,12 @@ function WellnessTracker({ onComplete }) {
               
               return (
                 <div key={index} className="flex-1 flex flex-col items-center group relative">
-                  {/* Tooltip */}
                   {hasData && (
                     <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
                       {value}/{max}
                     </div>
                   )}
                   
-                  {/* Bar with animation */}
                   <div 
                     className={`w-full rounded-t-lg transition-all duration-500 ease-out relative overflow-hidden ${
                       isToday ? 'ring-2 ring-offset-2 ring-blue-400' : ''
@@ -875,7 +864,6 @@ function WellnessTracker({ onComplete }) {
                     )}
                   </div>
                   
-                  {/* Day label */}
                   <div className="mt-2 text-center">
                     <div className={`text-xs font-medium ${isToday ? 'text-blue-600' : 'text-gray-500'}`}>
                       {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
@@ -889,7 +877,6 @@ function WellnessTracker({ onComplete }) {
             })}
           </div>
           
-          {/* Grid lines */}
           <div className="absolute inset-0 pointer-events-none">
             {[0, 25, 50, 75, 100].map((percent) => (
               <div
@@ -901,7 +888,6 @@ function WellnessTracker({ onComplete }) {
           </div>
         </div>
 
-        {/* Stats Summary */}
         <div className="grid grid-cols-3 gap-3 mt-4">
           <div className="bg-white rounded-lg p-3 text-center">
             <div className="text-xs text-gray-500">Average</div>
@@ -924,7 +910,7 @@ function WellnessTracker({ onComplete }) {
         </div>
       </div>
 
-      {/* Fluid Interactive Sliders */}
+      {/* sliders */}
       <div className="space-y-6 mb-6">
         {categories.map(cat => {
           const trend = getTrend(cat.key)
@@ -953,7 +939,7 @@ function WellnessTracker({ onComplete }) {
                 </div>
               </div>
               
-              {/* Fluid Progress Bar with full-area invisible range overlay */}
+              {/* progress bar */}
               <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden mb-2 shadow-inner">
                 <div
                   className={`absolute top-0 left-0 h-full bg-gradient-to-r ${cat.gradient} transition-all duration-300 ease-out rounded-full`}
@@ -962,11 +948,6 @@ function WellnessTracker({ onComplete }) {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse" />
                 </div>
 
-                {/*
-                  Place the range input inside the same relative container and expand its
-                  hit area (top/bottom) so clicks/touches anywhere on the bar register.
-                  The input remains visually hidden (opacity-0) but receives pointer events.
-                */}
                 <input
                   type="range"
                   min="1"
@@ -978,7 +959,7 @@ function WellnessTracker({ onComplete }) {
                 />
               </div>
 
-              {/* Warning messages */}
+              {/* warning messages */}
               {cat.key === 'stress' && wellnessData.stress > 7 && (
                 <p className="text-xs text-red-600 mt-2 flex items-center">
                   <span className="mr-1">⚠️</span>
@@ -996,7 +977,7 @@ function WellnessTracker({ onComplete }) {
         })}
       </div>
 
-      {/* Notes Section */}
+      {/* notes */}
       <div className="mb-6">
         <label className="block font-medium text-gray-900 mb-2">
           📝 Notes (Optional)
@@ -1010,7 +991,7 @@ function WellnessTracker({ onComplete }) {
         />
       </div>
 
-      {/* Insights */}
+      {/* quick insights */}
       <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-xl mb-6 border border-purple-100">
         <h3 className="font-semibold text-purple-900 mb-3 flex items-center">
           <span className="text-xl mr-2">💡</span>
@@ -1032,7 +1013,7 @@ function WellnessTracker({ onComplete }) {
         </div>
       </div>
 
-      {/* Submit Button */}
+      {/* submit btn */}
       <button
         onClick={handleSubmit}
         className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
@@ -1044,7 +1025,7 @@ function WellnessTracker({ onComplete }) {
   )
 }
 
-// Progress Dashboard Component
+// Progress Dashboard
 function ProgressDashboard({ userProgress }) {
   return (
     <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -1081,6 +1062,7 @@ function ProgressDashboard({ userProgress }) {
   )
 }
 
+//Header (includes buttons to all parts of the website, home, play games, learn, about, get help.)
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   
@@ -1144,13 +1126,13 @@ function Header() {
   )
 }
 
-// Enhanced Games Page with Actual Playable Games
+//Games Page containing all games
 function GamesPage({ userProgress, updateProgress }) {
   const [currentGame, setCurrentGame] = useState(null)
 
   const handleGameComplete = (gameId, score) => {
     updateProgress(gameId, score, true)
-    setTimeout(() => setCurrentGame(null), 3000) // Return to games list after 3 seconds
+    setTimeout(() => setCurrentGame(null), 3000) //note for aditeya: this line is a 3 second timer to return to games page (might edit to 5)
   }
 
   if (currentGame === 'decision-simulator') {
@@ -1279,7 +1261,7 @@ function GamesPage({ userProgress, updateProgress }) {
   )
 }
 
-// Enhanced Home Page (simplified version)
+// Home Page
 function HomePage() {
   const navigate = useNavigate()
   return (
@@ -1317,7 +1299,6 @@ function HomePage() {
         </div>
       </div>
 
-      {/* Games Preview Section */}
       <div className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -1357,7 +1338,6 @@ function HomePage() {
         </div>
       </div>
 
-      {/* Research-Based Evidence Section */}
       <div className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -1402,8 +1382,7 @@ function HomePage() {
   )
 }
 
-// Enhanced Learn Page with Research Citations
-// Enhanced Learn Page with Research Citations
+//Learn Page (Links to all articles, credits are in README.md)
 function LearnPage() {
   const topics = [
     {
@@ -1500,7 +1479,7 @@ function LearnPage() {
 }
 
 
-// Other components remain the same (AboutPage, HelpPage, Footer)
+// About Page
 function AboutPage() {
   return (
     <div className="min-h-screen bg-white py-12">
@@ -1675,7 +1654,7 @@ function Footer() {
   )
 }
 
-// Main App Component
+// Routing/main app comp
 function App() {
   const { userProgress, updateProgress } = useGameState()
 
