@@ -1443,7 +1443,7 @@ function LearnPage() {
     },
     {
       id: 'who-guide',
-      title: 'WHO Guide for Evidence-Informed Decision-Making',
+      title: 'Guide for Evidence-Informed Decision-Making',
       summary: 'Global framework for decision-making under uncertainty and pressure. Comprehensive guidance on making informed choices in challenging situations.',
       readTime: '14 min read',
       externalLink: 'https://www.who.int/publications/i/item/9789240039872'
